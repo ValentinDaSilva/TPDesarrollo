@@ -67,7 +67,7 @@ public class HuespedDAOImp implements HuespedDAO {
             gson.toJson(huespedes, write);
 
         } catch (Exception e) {
-            // 
+            System.out.println("Error al escribir en el archivo de huespedes: " + e.getMessage());
         }
         return;
     }
