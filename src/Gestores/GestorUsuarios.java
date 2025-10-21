@@ -3,6 +3,7 @@ package Gestores;
 import ClasesDAO.UsuarioDAO;
 import ClasesDAO.UsuarioDAOImp;
 import ClasesDeDominio.Usuario;
+import ClasesDTO.UsuarioDTO;
 import Excepciones.UsuarioNoExistenteException;
 import Excepciones.ContrasenaIncorrectaException;
 
@@ -14,8 +15,7 @@ public class GestorUsuarios {
         this.dao = new UsuarioDAOImp();
     }
 
-    
-    public Usuario autenticar(String nombreUsuario, String contrasena)
+    public UsuarioDTO autenticar(String nombreUsuario, String contrasena)
             throws UsuarioNoExistenteException, ContrasenaIncorrectaException {
 
         Usuario usuario = dao.getUsuario(nombreUsuario);
@@ -28,6 +28,7 @@ public class GestorUsuarios {
             throw new ContrasenaIncorrectaException("Contraseña incorrecta para el usuario '" + nombreUsuario + "'.");
         }
 
-        return usuario;
+        // Devuelve solo los datos seguros
+        return new UsuarioDTO(usuario.getNombreUsuario());
     }
 }

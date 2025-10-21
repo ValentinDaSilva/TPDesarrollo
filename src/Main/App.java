@@ -1,7 +1,8 @@
 package Main;
 
 import java.util.Scanner;
-import ClasesDeDominio.Usuario;
+
+import ClasesDTO.UsuarioDTO;
 import Gestores.GestorUsuarios;
 import Excepciones.UsuarioNoExistenteException;
 import Excepciones.ContrasenaIncorrectaException;
@@ -18,7 +19,7 @@ public class App {
         String pass = sc.nextLine();
 
         try {
-            Usuario usuario = gestor.autenticar(nombre, pass);
+            UsuarioDTO usuario = gestor.autenticar(nombre, pass);
             System.out.println("Bienvenido " + usuario.getNombreUsuario());
         } catch (UsuarioNoExistenteException e) {
             System.out.println("Error: " + e.getMessage());
