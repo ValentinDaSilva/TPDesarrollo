@@ -1,14 +1,33 @@
 package Gestores;
 
+import ClasesDAO.UsuarioDAO;
+import ClasesDAO.UsuarioDAOImp;
+import ClasesDeDominio.Usuario;
+import Excepciones.UsuarioNoExistenteException;
+import Excepciones.ContrasenaIncorrectaException;
+
 public class GestorUsuarios {
-    public bool autenticarUsuario(String nombreUsuario, String contrasena) {
-        // Ajusta el DAO/servicio según tu proyecto
-        Usuario usuario = UsuarioDAO.obtenerPorNombre(nombreUsuario);
+
+    private UsuarioDAO dao;
+
+    public GestorUsuarios() {
+        this.dao = new UsuarioDAOImp();
+    }
+
+    
+    public Usuario autenticar(String nombreUsuario, String contrasena)
+            throws UsuarioNoExistenteException, ContrasenaIncorrectaException {
+
+        Usuario usuario = dao.getUsuario(nombreUsuario);
+
         if (usuario == null) {
-            throw new UsuarioNoExistenteException("El Usuario '" + nombreUsuario + "' no existe");
+            throw new UsuarioNoExistenteException("El usuario '" + nombreUsuario + "' no existe.");
         }
-        // Si usas hashing de contraseñas, compara el hash en vez de la cadena directa
-        return contrasena != null && contrasena.equals(usuario.getContrasena());
-       
+
+        if (!usuario.getPassword().equals(contrasena)) {
+            throw new ContrasenaIncorrectaException("Contraseña incorrecta para el usuario '" + nombreUsuario + "'.");
+        }
+
+        return usuario;
     }
 }
