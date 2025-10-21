@@ -58,7 +58,10 @@ public class HuespedDAOImp implements HuespedDAO {
     }
     @Override    
     public void deleteHuesped(Huesped huesped){
-        return;
+        List<Huesped> huespedes = obtenerTodos();
+        huespedes.removeIf(actual -> actual.getTipoDocumento().equals(huesped.getTipoDocumento()) && actual.getNumeroDocumento().equals(huesped.getNumeroDocumento()));
+        escribirEnArchivo(huespedes);
+        return; 
     }
     @Override
     public void escribirEnArchivo(List<Huesped> huespedes){
