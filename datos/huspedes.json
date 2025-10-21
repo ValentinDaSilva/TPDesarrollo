@@ -1,0 +1,94 @@
+[
+  {
+    "apellido": "Gomez",
+    "nombre": "Sofia",
+    "tipoDocumento": "DNI",
+    "numeroDocumento": "45900876",
+    "cuit": "27-45900876-3",
+    "posicionIVA": "Consumidor Final",
+    "direccion": {
+      "calle": "9 de Julio",
+      "numero": "1234",
+      "departamento": "B",
+      "piso": "2",
+      "codigoPostal": "3000",
+      "localidad": "Santa Fe",
+      "provincia": "Santa Fe",
+      "pais": "Argentina"
+    },
+    "telefono": "3425012345",
+    "email": "sofiagomez@gmail.com",
+    "ocupacion": "Abogada",
+    "nacionalidad": "Argentina",
+    "activo": true
+  },
+  {
+    "apellido": "Lopez",
+    "nombre": "Juan",
+    "tipoDocumento": "DNI",
+    "numeroDocumento": "44120900",
+    "cuit": "20-44120900-1",
+    "posicionIVA": "Monotributista",
+    "direccion": {
+      "calle": "San Martin",
+      "numero": "552",
+      "departamento": "",
+      "piso": "",
+      "codigoPostal": "3000",
+      "localidad": "Santa Fe",
+      "provincia": "Santa Fe",
+      "pais": "Argentina"
+    },
+    "telefono": "3425556677",
+    "email": "juan.lopez@gmail.com",
+    "ocupacion": "Comerciante",
+    "nacionalidad": "Argentina",
+    "activo": true
+  },
+  {
+    "apellido": "Smith",
+    "nombre": "Emily",
+    "tipoDocumento": "Pasaporte",
+    "numeroDocumento": "XK982345",
+    "cuit": "",
+    "posicionIVA": "No Responsable",
+    "direccion": {
+      "calle": "Calle Falsa",
+      "numero": "742",
+      "departamento": "",
+      "piso": "",
+      "codigoPostal": "1010",
+      "localidad": "Buenos Aires",
+      "provincia": "Buenos Aires",
+      "pais": "Estados Unidos"
+    },
+    "telefono": "+1 312 555 6677",
+    "email": "emily.smith@example.com",
+    "ocupacion": "Consultora",
+    "nacionalidad": "Estadounidense",
+    "activo": true
+  },
+  {
+    "apellido": "Martinez",
+    "nombre": "Carla",
+    "tipoDocumento": "DNI",
+    "numeroDocumento": "40222333",
+    "cuit": "27-40222333-6",
+    "posicionIVA": "Responsable Inscripto",
+    "direccion": {
+      "calle": "Belgrano",
+      "numero": "2100",
+      "departamento": "A",
+      "piso": "5",
+      "codigoPostal": "3000",
+      "localidad": "Santa Fe",
+      "provincia": "Santa Fe",
+      "pais": "Argentina"
+    },
+    "telefono": "3424567890",
+    "email": "carla.martinez@hotmail.com",
+    "ocupacion": "Ingeniera Civil",
+    "nacionalidad": "Argentina",
+    "activo": false
+  }
+]

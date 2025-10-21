@@ -3,16 +3,11 @@ package ClasesDeDominio;
 public class Usuario {
     private String nombreUsuario;
     private String password;
-    private String rol;
-
-    // Constructor vacío (necesario para Gson o Jackson)
-    public Usuario() {}
 
     // Constructor completo
-    public Usuario(String nombreUsuario, String password, String rol) {
+    public Usuario(String nombreUsuario, String password) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
-        this.rol = rol;
     }
 
     // ===== Getters =====
@@ -24,11 +19,6 @@ public class Usuario {
         return password;
     }
 
-    public String getRol() {
-        return rol;
-    }
-
-    // ===== Setters =====
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -37,8 +27,19 @@ public class Usuario {
         this.password = password;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public boolean verificarPassword(String password) {
+        return this.password.equals(password);
     }
 
+    public boolean cambiarPassword(String passwordActual, String nuevaPassword) {
+        if (verificarPassword(passwordActual)) {
+            setPassword(nuevaPassword);
+            return true;
+        }
+        return false;
+    }
+    
+     public boolean igualNombreUsuario(String nombreUsuario) {
+        return this.nombreUsuario.equals(nombreUsuario);
+     }
 }
