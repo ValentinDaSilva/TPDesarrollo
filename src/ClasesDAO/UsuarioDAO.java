@@ -1,13 +1,16 @@
 package ClasesDAO;
 import java.util.List;
-import ClasesDeDominio.Usuario;
+
+import ClasesDTO.UsuarioDTO;
 
 
 public interface UsuarioDAO {
-    List<Usuario> obtenerTodos();
-    Usuario getUsuario(String nombreUsuario);
-    void putUsuario(Usuario usuario);
-    void updateUsuario(Usuario usuario);
-    void deleteUsuario(Usuario usuario);
-    void escribirEnArchivo(List<Usuario> usuario);
+    List<UsuarioDTO> obtenerTodos();
+    UsuarioDTO getUsuario(String nombreUsuario);
+    void putUsuario(UsuarioDTO usuario);
+    void updateUsuario(UsuarioDTO usuario);
+    void deleteUsuario(UsuarioDTO usuario);
+    void escribirEnArchivo(List<UsuarioDTO> usuario);
+    boolean verificarPassword(UsuarioDTO usuario,String password);
+    boolean cambiarPassword(UsuarioDTO usuario, String passwordActual, String nuevaPassword);
 } 

@@ -2,13 +2,12 @@ package Main;
 
 import java.util.Scanner;
 
-import ClasesDTO.UsuarioDTO;
-import ClasesDTO.HuespedDTO;
 import Gestores.GestorUsuarios;
 import Gestores.GestorHuesped;
 import Excepciones.UsuarioNoExistenteException;
 import Excepciones.ContrasenaIncorrectaException;
 import Excepciones.HuespedNoEncontradoException;
+import ClasesDeDominio.*;
 
 public class App {
     public static void main(String[] args) {
@@ -26,7 +25,7 @@ public class App {
             System.out.print("Contraseña: ");
             String pass = sc.nextLine();
 
-            UsuarioDTO usuario = gestorUsuarios.autenticar(nombre, pass);
+            Usuario usuario = gestorUsuarios.autenticar(nombre, pass);
             System.out.println("Bienvenido " + usuario.getNombreUsuario());
 
             // ====== MENÚ PRINCIPAL ======
@@ -48,9 +47,9 @@ public class App {
                         String nroDoc = sc.nextLine();
 
                         try {
-                            HuespedDTO huesped = gestorHuesped.buscarHuesped(tipoDoc, nroDoc);
+                            Huesped huesped = gestorHuesped.buscarHuesped(tipoDoc, nroDoc);
                             System.out.println("\nHuésped encontrado:");
-                            System.out.println("Nombre completo: " + huesped.getNombreCompleto());
+                            System.out.println("Nombre completo: " + huesped.getNombre() + " " + huesped.getApellido());
                             System.out.println("Documento: " + huesped.getTipoDocumento() + " " + huesped.getNumeroDocumento());
                             System.out.println("Teléfono: " + huesped.getTelefono());
                             System.out.println("Email: " + huesped.getEmail());

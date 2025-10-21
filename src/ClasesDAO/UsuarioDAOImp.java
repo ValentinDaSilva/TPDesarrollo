@@ -1,17 +1,17 @@
 package ClasesDAO;
 
-import ClasesDeDominio.Usuario;
 import com.google.gson.Gson;
+import ClasesDTO.UsuarioDTO;
 import java.io.*;
 import java.util.*;
 
 
 public class UsuarioDAOImp implements UsuarioDAO {
     @Override   
-    public List<Usuario> obtenerTodos() {
+    public List<UsuarioDTO> obtenerTodos() {
         try (Reader reader = new FileReader("datos/usuarios.json")) {
             Gson gson = new Gson();
-            Usuario[] usuariosArray = gson.fromJson(reader, Usuario[].class);
+            UsuarioDTO[] usuariosArray = gson.fromJson(reader, UsuarioDTO[].class);
             return usuariosArray != null ? new ArrayList<>(Arrays.asList(usuariosArray)) : new ArrayList<>();
             
         }  catch (FileNotFoundException e) {
@@ -26,13 +26,13 @@ public class UsuarioDAOImp implements UsuarioDAO {
         }
     }
     @Override
-    public Usuario getUsuario(String nombreUsuario) {
+    public UsuarioDTO getUsuario(String nombreUsuario) {
         return obtenerTodos().stream().filter(e -> e.getNombreUsuario().equals(nombreUsuario)).findFirst().orElse(null);
     }
 
     @Override
-    public void putUsuario(Usuario usuario){
-        List<Usuario> usuarios = obtenerTodos();
+    public void putUsuario(UsuarioDTO usuario){
+        List<UsuarioDTO> usuarios = obtenerTodos();
         usuarios.add(usuario);
         try(Writer writer = new FileWriter("datos/usuarios.json")) {
             Gson gson = new Gson();
@@ -44,10 +44,10 @@ public class UsuarioDAOImp implements UsuarioDAO {
     }
     
     @Override
-    public void updateUsuario(Usuario usuario){
-        List<Usuario> usuarios = obtenerTodos();
+    public void updateUsuario(UsuarioDTO usuario){
+        List<UsuarioDTO> usuarios = obtenerTodos();
         for(int i = 0; i < usuarios.size(); i++){
-            Usuario actual = usuarios.get(i);
+            UsuarioDTO actual = usuarios.get(i);
             if(actual.getNombreUsuario().equals(usuario.getNombreUsuario())){
                 usuarios.set(i, usuario);
                 escribirEnArchivo(usuarios);
@@ -57,14 +57,14 @@ public class UsuarioDAOImp implements UsuarioDAO {
         return;
     }
     @Override    
-    public void deleteUsuario(Usuario usuario){
-        List<Usuario> usuarios = obtenerTodos();
+    public void deleteUsuario(UsuarioDTO usuario){
+        List<UsuarioDTO> usuarios = obtenerTodos();
         usuarios.removeIf(actual -> actual.getNombreUsuario().equals(usuario.getNombreUsuario()));
         escribirEnArchivo(usuarios);
         return; 
     }
     @Override
-    public void escribirEnArchivo(List<Usuario> usuarios){
+    public void escribirEnArchivo(List<UsuarioDTO> usuarios){
         try (Writer write = new FileWriter("datos/usuarios.json")){
             Gson gson = new Gson();
             gson.toJson(usuarios, write);
@@ -73,4 +73,18 @@ public class UsuarioDAOImp implements UsuarioDAO {
         }
         return;
     }
+    
+    @Override
+    public boolean verificarPassword(UsuarioDTO usuario, String password) {
+        return usuario.getPassword().equals(password);
+    }
+    @Override
+    public boolean cambiarPassword(UsuarioDTO usuario, String passwordActual, String nuevaPassword) {
+        if (verificarPassword(usuario, passwordActual)) {
+            usuario.setPassword(nuevaPassword);
+            return true;
+        }
+        return false;
+    }
+    
 }

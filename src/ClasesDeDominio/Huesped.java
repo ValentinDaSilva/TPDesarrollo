@@ -13,12 +13,13 @@ public class Huesped {
     private String email;
     private String ocupacion;
     private String nacionalidad;
-    private boolean activo;
-
+    private String direccionCompleta;
+    public Huesped() {
+    }
 
     public Huesped(String apellido, String nombre, String tipoDocumento, String numeroDocumento,
                    String cuit, String posicionIVA, Direccion direccion,
-                   String telefono, String email, String ocupacion, String nacionalidad, boolean activo) {
+                   String telefono, String email, String ocupacion, String nacionalidad) {
         this.apellido = apellido;
         this.nombre = nombre;
         this.tipoDocumento = tipoDocumento;
@@ -30,7 +31,10 @@ public class Huesped {
         this.email = email;
         this.ocupacion = ocupacion;
         this.nacionalidad = nacionalidad;
-        this.activo = activo;
+        this.direccionCompleta = direccion != null
+                ? direccion.getCalle() + " " + direccion.getNumero() + ", " +
+                  direccion.getLocalidad() + ", " + direccion.getProvincia()
+                : "";
     }
 
     // ======== Getters y Setters ========
@@ -122,14 +126,135 @@ public class Huesped {
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
-
-    public boolean isActivo() {
-        return activo;
+    public String getDireccionCompleta() {
+        return direccionCompleta;
+    }
+    public void setDireccionCompleta(Direccion direccion) {
+        this.direccionCompleta = direccion != null
+                ? direccion.getCalle() + " " + direccion.getNumero() + ", " +
+                  direccion.getLocalidad() + ", " + direccion.getProvincia()
+                : "";
     }
 
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+
+    // Validadores para cada campo (sin expresiones regulares)
+    public boolean validarApellido() {
+        if (apellido == null) return false;
+        return todosLetrasOEspacios(apellido);
     }
 
+    public boolean validarNombre() {
+        if (nombre == null) return false;
+        return todosLetrasOEspacios(nombre);
+    }
+
+    public boolean validarTipoDocumento() {
+        if (tipoDocumento == null) return false;
+        String t = tipoDocumento.trim().toUpperCase();
+        java.util.Set<String> aceptados = new java.util.HashSet<>(java.util.Arrays.asList(
+            "DNI", "PASAPORTE", "LC", "LE", "CI"
+        ));
+        return aceptados.contains(t);
+    }
+
+    public boolean validarNumeroDocumento() {
+        if (numeroDocumento == null) return false;
+        return todosNumeros(numeroDocumento);
+    }
+
+    public boolean validarCuit() {
+        if (cuit == null) return false;
+        for (int i = 0; i < cuit.length(); i++) {
+            char ch = cuit.charAt(i);
+            if (!Character.isDigit(ch)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean validarPosicionIVA() {
+        if (posicionIVA == null) return false;
+        String p = posicionIVA.trim().toUpperCase();
+        java.util.Set<String> aceptadas = new java.util.HashSet<>(java.util.Arrays.asList(
+            "RESPONSABLE INSCRIPTO", "MONOTRIBUTISTA", "CONSUMIDOR FINAL", "EXENTO", "NO RESPONSABLE"
+        ));
+        return aceptadas.contains(p);
+    }
+
+    public boolean validarDireccion() {
+        return todosLetrasOEspacios(direccion.getCalle()) &&
+               todosNumeros(String.valueOf(direccion.getNumero())) &&
+               todosLetrasOEspacios(direccion.getLocalidad()) &&
+               todosLetrasOEspacios(direccion.getProvincia());
+    }
+
+    public boolean validarTelefono() {
+        if (telefono == null) return false;
+        return todosNumeros(String.valueOf(telefono));
+    }
+
+    public boolean validarEmail() {
+        if (email == null) return false;
+        boolean tieneArroba = false;
+        boolean tienePunto = false;
+        for(int i = 0; i < email.length(); i++) {
+            char c = email.charAt(i);
+            if (c == ' ' || c == ',') {
+                return false;
+            }
+            if(c == '@') {
+                tieneArroba = true;
+            }
+            if(c == '.') {
+                tienePunto = true;
+            }
+        }
+
+        return (tieneArroba && tienePunto);
+    }
+
+    public boolean validarOcupacion(String ocupacion) {
+        if (ocupacion == null) return false;
+        return todosLetrasOEspacios(ocupacion);
+    }
+
+    public boolean validarNacionalidad() {
+        if (nacionalidad == null) return false;
+        return todosLetrasOEspacios(nacionalidad);
+    }
         
+    private boolean todosNumeros(String s) {
+        if (s == null || s.isEmpty()) return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isDigit(s.charAt(i))) return false;
+        }
+        return true;
+    }
+
+    private boolean todosLetrasOEspacios(String s) {
+        if (s == null) return false;
+        String t = s.trim();
+        if (t.isEmpty()) return false;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!(Character.isLetter(c) || c == ' ')) return false;
+        }
+        return true;
+    }
+    public boolean validar() {
+        if (!validarApellido()) return false;
+        if (!validarNombre()) return false;
+        if (!validarTipoDocumento()) return false;
+        if (!validarNumeroDocumento()) return false;
+        if (!validarCuit()) return false;
+        if (!validarPosicionIVA()) return false;
+        if (direccion == null) return false;
+        if (!validarDireccion()) return false;
+        if (!validarTelefono()) return false;
+        if (!validarEmail()) return false;
+        if (!validarOcupacion(this.ocupacion)) return false;
+        if (!validarNacionalidad()) return false;
+        return true;
+    }
 }
