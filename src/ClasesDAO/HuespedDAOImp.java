@@ -13,7 +13,6 @@ public class HuespedDAOImp implements HuespedDAO {
             Gson gson = new Gson();
             Huesped[] huespedesArray = gson.fromJson(reader, Huesped[].class);
             return huespedesArray != null ? new ArrayList<>(Arrays.asList(huespedesArray)) : new ArrayList<>();
-            
         }  catch (FileNotFoundException e) {
             System.out.println("No se encontro el archivo de huespedes");
             return new ArrayList<>();
@@ -27,7 +26,7 @@ public class HuespedDAOImp implements HuespedDAO {
     }
     @Override
     public Huesped getHuesped(String tipoDocumento, String numeroDocumento) {
-        return obtenerTodos().stream().filter(e -> e.getTipoDocumento().equals(tipoDocumento) && e.getNumeroDocumento().equals(numeroDocumento)).findFirst().orElse(null);
+        return obtenerTodos().stream().filter(e -> e.getTipoDocumento().equalsIgnoreCase(tipoDocumento) && e.getNumeroDocumento().equals(numeroDocumento)).findFirst().orElse(null);
     }
 
     @Override
