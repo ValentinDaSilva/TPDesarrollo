@@ -16,6 +16,9 @@ public class HuespedDTO {
     private String cuit;
     private String ocupacion;
 
+    public HuespedDTO() {
+    }
+
     public HuespedDTO(String apellido, String nombre, String tipoDocumento, String numeroDocumento,
                    String cuit, String posicionIVA, Direccion direccion,
                    String telefono, String email, String ocupacion, String nacionalidad) {
@@ -80,6 +83,46 @@ public class HuespedDTO {
     public String getOcupacion() {
         return ocupacion;
     }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public void setDireccionCompleta(String direccionCompleta) {
+        this.direccionCompleta = direccionCompleta;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+        this.direccionCompleta = direccion != null
+                ? direccion.getCalle() + " " + direccion.getNumero() + ", " +
+                  direccion.getLocalidad() + ", " + direccion.getProvincia()
+                : "";
+    }
+
     public void setPosicionIVA(String posicionIVA) {
         this.posicionIVA = posicionIVA;
     }
