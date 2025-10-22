@@ -64,4 +64,7 @@ public class GestorHuesped {
         return;
     }
 
+    public void modificarHuesped(Huesped husped){
+        return ;
+    }
 }
