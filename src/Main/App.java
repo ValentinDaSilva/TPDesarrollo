@@ -86,7 +86,7 @@ public class App {
                         nuevoHuesped.setDireccion(direccion);
 
                         gestorHuesped.registrarHuesped(nuevoHuesped);
-                        System.out.println("✅ Huésped registrado exitosamente.");
+                        System.out.println("Huésped registrado exitosamente.");
                         break;
 
                     case 3:
@@ -132,10 +132,10 @@ public class App {
 
         try {
             Huesped huesped = gestorHuesped.buscarHuesped(tipoDoc, numDoc);
-            System.out.println("✅ Huésped encontrado: " + huesped.getNombre() + " " + huesped.getApellido());
+            System.out.println("Huésped encontrado: " + huesped.getNombre() + " " + huesped.getApellido());
             return huesped;
         } catch (HuespedNoEncontradoException e) {
-            System.out.println("❌ " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             return null;
         }
     }
@@ -212,9 +212,9 @@ public class App {
 
         try {
             gestorHuesped.modificarHuesped(huesped);
-            System.out.println("✅ Huésped actualizado correctamente.");
+            System.out.println("Huésped actualizado correctamente.");
         } catch (Exception e) {
-            System.out.println("❌ Error al actualizar huésped: " + e.getMessage());
+            System.out.println("Error al actualizar huésped: " + e.getMessage());
         }
     }
     
