@@ -9,42 +9,50 @@ import Excepciones.HuespedInvalidoException;
 import Excepciones.HuespedNoEncontradoException;
 
 public class GestorHuesped {
-    private HuespedDAO dao = new HuespedDAOImp();
+    //Instancia para el singleton
+    private final HuespedDAO dao;
+
+    public GestorHuesped() {
+        this.dao = HuespedDAOImp.getInstancia();
+    }
 
     public Huesped buscarHuesped(String tipoDoc, String nroDoc) throws HuespedNoEncontradoException {
-
         HuespedDTO dto = dao.getHuesped(tipoDoc, nroDoc);
         if (dto == null) {
             throw new HuespedNoEncontradoException("No se encontró ningún huésped con ese documento.");
         }
-        Huesped h = convertirAClaseDominio(dto);
-        return h;
+        return convertirAClaseDominio(dto);
     }
 
-    public void registrarHuesped(Huesped huesped) throws HuespedYaExistenteException, HuespedInvalidoException {
-        HuespedDTO dto = dao.getHuesped(huesped.getTipoDocumento(), huesped.getNumeroDocumento());
-        
-        if (dto != null) {
-            throw new HuespedYaExistenteException (
-                "Ya se encontró un huésped registrado con ese tipo y número de documento."
+    public void registrarHuesped(Huesped huesped)
+            throws HuespedYaExistenteException, HuespedInvalidoException {
+
+        HuespedDTO dtoExistente = dao.getHuesped(
+            huesped.getTipoDocumento(),
+            huesped.getNumeroDocumento()
+        );
+
+        if (dtoExistente != null) {
+            throw new HuespedYaExistenteException(
+                "Ya existe un huésped con ese tipo y número de documento."
             );
         }
-        HuespedDTO nuevoDto = convertirADTO(huesped);
-        dao.putHuesped(nuevoDto);
 
-        return;
+        if (huesped.getNombre() == null || huesped.getApellido() == null) {
+            throw new HuespedInvalidoException("El huésped debe tener nombre y apellido.");
+        }
+
+        dao.putHuesped(convertirADTO(huesped));
     }
 
-    public void modificarHuesped(Huesped husped){
-        HuespedDTO dto = convertirADTO(husped);
+    public void modificarHuesped(Huesped huesped) {
+        HuespedDTO dto = convertirADTO(huesped);
         dao.updateHuesped(dto);
-        return ;
     }
 
     public void eliminarHuesped(Huesped huesped) {
         HuespedDTO dto = convertirADTO(huesped);
         dao.deleteHuesped(dto);
-        return ;
     }
 
     private HuespedDTO convertirADTO(Huesped huesped) {
@@ -62,6 +70,7 @@ public class GestorHuesped {
         dto.setNacionalidad(huesped.getNacionalidad());
         return dto;
     }
+
     private Huesped convertirAClaseDominio(HuespedDTO dto) {
         Huesped h = new Huesped();
         h.setApellido(dto.getApellido());

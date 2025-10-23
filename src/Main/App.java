@@ -123,6 +123,7 @@ public class App {
     }
 
     private static Huesped buscarHuesped(GestorHuesped gestorHuesped) {
+        @SuppressWarnings("resource")
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Tipo de documento (DNI/PAS): ");
@@ -141,6 +142,7 @@ public class App {
     }
 
     private static void modificarHuesped(Huesped huesped, GestorHuesped gestorHuesped) {
+        @SuppressWarnings("resource")
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Presiona Enter para mantener el valor actual.");

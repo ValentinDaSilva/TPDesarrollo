@@ -10,5 +10,4 @@ public interface HuespedDAO {
     void putHuesped(HuespedDTO huesped);
     void updateHuesped(HuespedDTO huesped);
     void deleteHuesped(HuespedDTO huesped);
-    void escribirEnArchivo(List<HuespedDTO> huespedes);
 } 

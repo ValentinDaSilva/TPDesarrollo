@@ -9,14 +9,15 @@ import Excepciones.ContrasenaIncorrectaException;
 
 public class GestorUsuarios {
 
-    private UsuarioDAO dao;
+    private final UsuarioDAO dao;
 
     public GestorUsuarios() {
-        this.dao = new UsuarioDAOImp();
+        // 🔹 En lugar de crear un DAO nuevo, usamos la instancia única
+        this.dao = UsuarioDAOImp.getInstancia();
     }
 
     public Usuario autenticar(String nombreUsuario, String contrasena)
-        throws UsuarioNoExistenteException, ContrasenaIncorrectaException {
+            throws UsuarioNoExistenteException, ContrasenaIncorrectaException {
 
         UsuarioDTO usuario = dao.getUsuario(nombreUsuario);
 
@@ -28,6 +29,7 @@ public class GestorUsuarios {
             throw new ContrasenaIncorrectaException("Contraseña incorrecta para el usuario '" + nombreUsuario + "'.");
         }
 
+        // 🔹 Transformamos el DTO a la clase de dominio
         Usuario usuarioDominio = new Usuario(nombreUsuario);
 
         return usuarioDominio;
