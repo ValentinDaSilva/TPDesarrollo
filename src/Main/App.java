@@ -35,7 +35,7 @@ public class App {
                 System.out.println("1. Buscar Huésped");
                 System.out.println("2. Dar de Alta Huésped");
                 System.out.println("3. Modificar Huésped");
-                System.out.println("3. Dar de Baja Huésped");
+                System.out.println("4. Dar de Baja Huésped");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
                 opcion = sc.nextInt();
