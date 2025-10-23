@@ -2,24 +2,35 @@ package Gestores;
 
 import ClasesDeDominio.Huesped;
 import ClasesDTO.HuespedDTO;
+import ClasesDAO.DAOFactory;
 import ClasesDAO.HuespedDAO;
-import ClasesDAO.HuespedDAOImp;
 import Excepciones.HuespedYaExistenteException;
 import Excepciones.HuespedInvalidoException;
 import Excepciones.HuespedNoEncontradoException;
 
+/**
+ * Gestor encargado de manejar las operaciones de negocio
+ * relacionadas con los huéspedes.
+ *
+ * Interactúa con el HuespedDAO (obtenido a través de DAOFactory)
+ * para realizar las operaciones de búsqueda, alta, modificación
+ * y eliminación sobre los huéspedes del sistema.
+ */
 public class GestorHuesped {
-    //Instancia para el singleton
+
     private final HuespedDAO dao;
 
     public GestorHuesped() {
-        this.dao = HuespedDAOImp.getInstancia();
+        this.dao = DAOFactory.getInstancia().getHuespedDAO();
     }
 
-    public Huesped buscarHuesped(String tipoDoc, String nroDoc) throws HuespedNoEncontradoException {
+    public Huesped buscarHuesped(String tipoDoc, String nroDoc)
+            throws HuespedNoEncontradoException {
         HuespedDTO dto = dao.getHuesped(tipoDoc, nroDoc);
         if (dto == null) {
-            throw new HuespedNoEncontradoException("No se encontró ningún huésped con ese documento.");
+            throw new HuespedNoEncontradoException(
+                "No se encontró ningún huésped con ese documento."
+            );
         }
         return convertirAClaseDominio(dto);
     }
@@ -46,13 +57,11 @@ public class GestorHuesped {
     }
 
     public void modificarHuesped(Huesped huesped) {
-        HuespedDTO dto = convertirADTO(huesped);
-        dao.updateHuesped(dto);
+        dao.updateHuesped(convertirADTO(huesped));
     }
 
     public void eliminarHuesped(Huesped huesped) {
-        HuespedDTO dto = convertirADTO(huesped);
-        dao.deleteHuesped(dto);
+        dao.deleteHuesped(convertirADTO(huesped));
     }
 
     private HuespedDTO convertirADTO(Huesped huesped) {
