@@ -101,7 +101,7 @@ public class App {
                         Huesped huespedAEliminar = buscarHuesped(gestorHuesped);
                         if (huespedAEliminar != null) {
                             gestorHuesped.eliminarHuesped(huespedAEliminar);
-                            System.out.println("Funcionalidad de eliminación no implementada aún.");
+                            System.out.println("Huésped eliminado correctamente.");
                         }
                         break;
                     case 0:
