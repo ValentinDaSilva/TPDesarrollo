@@ -35,10 +35,11 @@ public class App {
                 System.out.println("1. Buscar Huésped");
                 System.out.println("2. Dar de Alta Huésped");
                 System.out.println("3. Modificar Huésped");
+                System.out.println("3. Dar de Baja Huésped");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
                 opcion = sc.nextInt();
-                sc.nextLine(); // limpia buffer
+                sc.nextLine(); 
 
                 switch (opcion) {
                     case 1:
@@ -95,7 +96,14 @@ public class App {
                             modificarHuesped(huesped, gestorHuesped);
                         }
                         break;
-
+                    case 4:
+                        System.out.println("Eliminar huésped.");
+                        Huesped huespedAEliminar = buscarHuesped(gestorHuesped);
+                        if (huespedAEliminar != null) {
+                            gestorHuesped.eliminarHuesped(huespedAEliminar);
+                            System.out.println("Funcionalidad de eliminación no implementada aún.");
+                        }
+                        break;
                     case 0:
                         System.out.println("Saliendo del sistema...");
                         break;
@@ -114,9 +122,6 @@ public class App {
         sc.close();
     }
 
-    // =========================================
-    // MÉTODO: Buscar huésped
-    // =========================================
     private static Huesped buscarHuesped(GestorHuesped gestorHuesped) {
         Scanner sc = new Scanner(System.in);
 
@@ -135,9 +140,6 @@ public class App {
         }
     }
 
-    // =========================================
-    // MÉTODO: Modificar huésped
-    // =========================================
     private static void modificarHuesped(Huesped huesped, GestorHuesped gestorHuesped) {
         Scanner sc = new Scanner(System.in);
 
@@ -215,4 +217,5 @@ public class App {
             System.out.println("❌ Error al actualizar huésped: " + e.getMessage());
         }
     }
+    
 }

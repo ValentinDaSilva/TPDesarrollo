@@ -17,7 +17,52 @@ public class GestorHuesped {
         if (dto == null) {
             throw new HuespedNoEncontradoException("No se encontró ningún huésped con ese documento.");
         }
-        // Convertir DTO a dominio      
+        Huesped h = convertirAClaseDominio(dto);
+        return h;
+    }
+
+    public void registrarHuesped(Huesped huesped) throws HuespedYaExistenteException, HuespedInvalidoException {
+        HuespedDTO dto = dao.getHuesped(huesped.getTipoDocumento(), huesped.getNumeroDocumento());
+        
+        if (dto != null) {
+            throw new HuespedYaExistenteException (
+                "Ya se encontró un huésped registrado con ese tipo y número de documento."
+            );
+        }
+        HuespedDTO nuevoDto = convertirADTO(huesped);
+        dao.putHuesped(nuevoDto);
+
+        return;
+    }
+
+    public void modificarHuesped(Huesped husped){
+        HuespedDTO dto = convertirADTO(husped);
+        dao.updateHuesped(dto);
+        return ;
+    }
+
+    public void eliminarHuesped(Huesped huesped) {
+        HuespedDTO dto = convertirADTO(huesped);
+        dao.deleteHuesped(dto);
+        return ;
+    }
+
+    private HuespedDTO convertirADTO(Huesped huesped) {
+        HuespedDTO dto = new HuespedDTO();
+        dto.setApellido(huesped.getApellido());
+        dto.setNombre(huesped.getNombre());
+        dto.setTipoDocumento(huesped.getTipoDocumento());
+        dto.setNumeroDocumento(huesped.getNumeroDocumento());
+        dto.setCuit(huesped.getCuit());
+        dto.setPosicionIVA(huesped.getPosicionIVA());
+        dto.setDireccion(huesped.getDireccion());
+        dto.setTelefono(huesped.getTelefono());
+        dto.setEmail(huesped.getEmail());
+        dto.setOcupacion(huesped.getOcupacion());
+        dto.setNacionalidad(huesped.getNacionalidad());
+        return dto;
+    }
+    private Huesped convertirAClaseDominio(HuespedDTO dto) {
         Huesped h = new Huesped();
         h.setApellido(dto.getApellido());
         h.setNombre(dto.getNombre());
@@ -31,40 +76,6 @@ public class GestorHuesped {
         h.setOcupacion(dto.getOcupacion());
         h.setNacionalidad(dto.getNacionalidad());
         h.setDireccionCompleta(dto.getDireccion());
-
         return h;
-    }
-
-    public void registrarHuesped(Huesped huesped)
-        throws HuespedYaExistenteException, HuespedInvalidoException {
-
-    
-        HuespedDTO dto = dao.getHuesped(huesped.getTipoDocumento(), huesped.getNumeroDocumento());
-        
-        if (dto != null) {
-            throw new HuespedYaExistenteException (
-                "Ya se encontró un huésped registrado con ese tipo y número de documento."
-            );
-        }
-        HuespedDTO nuevoDto = new HuespedDTO();
-        nuevoDto.setApellido(huesped.getApellido());
-        nuevoDto.setNombre(huesped.getNombre());
-        nuevoDto.setTipoDocumento(huesped.getTipoDocumento());
-        nuevoDto.setNumeroDocumento(huesped.getNumeroDocumento());
-        nuevoDto.setCuit(huesped.getCuit());
-        nuevoDto.setPosicionIVA(huesped.getPosicionIVA());
-        nuevoDto.setDireccion(huesped.getDireccion());
-        nuevoDto.setTelefono(huesped.getTelefono());
-        nuevoDto.setEmail(huesped.getEmail());
-        nuevoDto.setOcupacion(huesped.getOcupacion());
-        nuevoDto.setNacionalidad(huesped.getNacionalidad());
-        
-        dao.putHuesped(nuevoDto);
-
-        return;
-    }
-
-    public void modificarHuesped(Huesped husped){
-        return ;
     }
 }
