@@ -20,5 +20,4 @@ public class DAOFactory {
     public UsuarioDAO getUsuarioDAO() {
         return UsuarioDAOImp.getInstancia();
     }
-
 }

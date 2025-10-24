@@ -40,7 +40,7 @@ public class App {
                 System.out.print("Seleccione una opción: ");
                 opcion = sc.nextInt();
                 sc.nextLine(); 
-
+                
                 switch (opcion) {
                     case 1:
                         System.out.println("Buscar huésped existente.");

@@ -8,14 +8,7 @@ import Excepciones.HuespedYaExistenteException;
 import Excepciones.HuespedInvalidoException;
 import Excepciones.HuespedNoEncontradoException;
 
-/**
- * Gestor encargado de manejar las operaciones de negocio
- * relacionadas con los huéspedes.
- *
- * Interactúa con el HuespedDAO (obtenido a través de DAOFactory)
- * para realizar las operaciones de búsqueda, alta, modificación
- * y eliminación sobre los huéspedes del sistema.
- */
+
 public class GestorHuesped {
 
     private final HuespedDAO dao;
