@@ -1,0 +1,48 @@
+package com.hotel.hotel_backend.dto;
+
+public class HuespedDTO {
+
+    private String nombre;
+    private String apellido;
+    private String tipoDocumento;
+    private String nroDocumento;
+    private String ocupacion;
+    private String nacionalidad;
+    private String cuit;
+    private String email;
+
+    private DireccionDTO direccion; // puede ser null
+    private String condicionIVA;    // puede ser null
+
+    public HuespedDTO() {}
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getApellido() { return apellido; }
+    public void setApellido(String apellido) { this.apellido = apellido; }
+
+    public String getTipoDocumento() { return tipoDocumento; }
+    public void setTipoDocumento(String tipoDocumento) { this.tipoDocumento = tipoDocumento; }
+
+    public String getNroDocumento() { return nroDocumento; }
+    public void setNroDocumento(String nroDocumento) { this.nroDocumento = nroDocumento; }
+
+    public String getOcupacion() { return ocupacion; }
+    public void setOcupacion(String ocupacion) { this.ocupacion = ocupacion; }
+
+    public String getNacionalidad() { return nacionalidad; }
+    public void setNacionalidad(String nacionalidad) { this.nacionalidad = nacionalidad; }
+
+    public String getCuit() { return cuit; }
+    public void setCuit(String cuit) { this.cuit = cuit; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public DireccionDTO getDireccion() { return direccion; }
+    public void setDireccion(DireccionDTO direccion) { this.direccion = direccion; }
+
+    public String getCondicionIVA() { return condicionIVA; }
+    public void setCondicionIVA(String condicionIVA) { this.condicionIVA = condicionIVA; }
+}
