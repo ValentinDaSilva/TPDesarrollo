@@ -50,6 +50,7 @@ public class MapearADTO {
     dto.setOcupacion(h.getOcupacion());
     dto.setNacionalidad(h.getNacionalidad());
     dto.setTelefono(h.getTelefono());
+    dto.setFechaNacimiento(h.getFechaNacimiento());
 
     Direccion dir = h.getDireccion();
     if (dir != null) {

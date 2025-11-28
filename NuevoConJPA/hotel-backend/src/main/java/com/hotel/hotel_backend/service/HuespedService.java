@@ -72,6 +72,7 @@ public class HuespedService {
         existente.setOcupacion(nuevosDatos.getOcupacion());
         existente.setNacionalidad(nuevosDatos.getNacionalidad());
         existente.setTelefono(nuevosDatos.getTelefono());
+        existente.setFechaNacimiento(nuevosDatos.getFechaNacimiento());
 
         huespedDAO.save(existente);
 

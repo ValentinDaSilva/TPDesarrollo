@@ -46,6 +46,7 @@ public class MapearADominio {
         h.setOcupacion(dto.getOcupacion());
         h.setNacionalidad(dto.getNacionalidad());
         h.setTelefono(dto.getTelefono());
+        h.setFechaNacimiento(dto.getFechaNacimiento());
 
         // Direccion anidada
         if (dto.getDireccion() != null) {

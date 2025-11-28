@@ -1,6 +1,8 @@
 // [src/main/java/com/hotel/hotel_backend/dto/HuespedDTO.java]
 package com.hotel.hotel_backend.dto;
 
+import java.time.LocalDate;
+
 public class HuespedDTO {
     private String nombre;
     private String apellido;
@@ -13,6 +15,7 @@ public class HuespedDTO {
 
     private DireccionDTO direccion; // puede ser null
     private String telefono;        // puede ser null
+    private LocalDate fechaNacimiento; // puede ser null
 
     private boolean forzar;
     public boolean isForzar() { return forzar; }
@@ -49,4 +52,7 @@ public class HuespedDTO {
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
 }

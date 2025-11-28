@@ -1,6 +1,7 @@
 package com.hotel.hotel_backend.domain;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "huesped")
@@ -19,12 +20,13 @@ public class Huesped {
     private String ocupacion;
     private String nacionalidad;
     private String telefono;
+    private LocalDate fechaNacimiento;
     public Huesped() {
     }
 
     public Huesped(String apellido, String nombre, String tipoDocumento, String numeroDocumento,
                    String cuit, Direccion direccion,
-                   String email, String ocupacion, String nacionalidad, String telefono) {
+                   String email, String ocupacion, String nacionalidad, String telefono, LocalDate fechaNacimiento) {
         this.apellido = apellido;
         this.nombre = nombre;
         this.tipoDocumento = tipoDocumento;
@@ -35,6 +37,7 @@ public class Huesped {
         this.ocupacion = ocupacion;
         this.nacionalidad = nacionalidad;
         this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     // ======== Getters y Setters ========
@@ -119,6 +122,14 @@ public class Huesped {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
     
 
