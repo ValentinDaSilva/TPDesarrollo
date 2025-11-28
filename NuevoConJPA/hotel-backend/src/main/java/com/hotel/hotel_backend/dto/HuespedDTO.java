@@ -14,6 +14,10 @@ public class HuespedDTO {
     private DireccionDTO direccion; // puede ser null
     private String condicionIVA;    // puede ser null
 
+    private boolean forzar;
+    public boolean isForzar() { return forzar; }
+    public void setForzar(boolean forzar) { this.forzar = forzar; }
+
     public HuespedDTO() {}
 
     public String getNombre() { return nombre; }

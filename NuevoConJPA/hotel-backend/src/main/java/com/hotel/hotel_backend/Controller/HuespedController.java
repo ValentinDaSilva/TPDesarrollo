@@ -22,10 +22,17 @@ public class HuespedController {
     public ResponseEntity<?> crear(@RequestBody HuespedDTO dto) {
         try {
             return ResponseEntity.ok(service.crearHuesped(dto));
+
         } catch (RuntimeException e) {
+
+            if (e.getMessage().equals("CUIT_DUPLICADO")) {
+                return ResponseEntity.status(409).body("CUIT_DUPLICADO");
+            }
+
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     // MODIFICAR
     @PutMapping

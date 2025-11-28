@@ -36,4 +36,7 @@ public interface HuespedDAO extends JpaRepository<Huesped, String> {
             @Param("tipoDocumento") String tipoDocumento,
             @Param("numeroDocumento") String numeroDocumento
     );
+
+    List<Huesped> findAllByCuit(String cuit);
+
 }

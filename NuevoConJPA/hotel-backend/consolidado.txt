@@ -11,18 +11,22 @@
 │   │   │   └── com
 │   │   │       └── hotel
 │   │   │           └── hotel_backend
+│   │   │               ├── config
+│   │   │               │   └── CorsConfig.java
 │   │   │               ├── Controller
 │   │   │               │   ├── EstadiaController.java
 │   │   │               │   ├── FacturaController.java
 │   │   │               │   ├── HuespedController.java
-│   │   │               │   └── ReservaController.java
+│   │   │               │   ├── ReservaController.java
+│   │   │               │   └── UsuarioController.java
 │   │   │               ├── dao
 │   │   │               │   ├── EstadiaDAO.java
 │   │   │               │   ├── FacturaDAO.java
 │   │   │               │   ├── HabitacionDAO.java
 │   │   │               │   ├── HuespedDAO.java
 │   │   │               │   ├── NotaDeCreditoDAO.java
-│   │   │               │   └── ReservaDAO.java
+│   │   │               │   ├── ReservaDAO.java
+│   │   │               │   └── UsuarioDAO.java
 │   │   │               ├── domain
 │   │   │               │   ├── Direccion.java
 │   │   │               │   ├── Estadia.java
@@ -39,10 +43,11 @@
 │   │   │               │   ├── Pago.java
 │   │   │               │   ├── Persona.java
 │   │   │               │   ├── Reserva.java
-│   │   │               │   └── ResponsableDePago
-│   │   │               │       ├── ResponsableDePago.java
-│   │   │               │       ├── ResponsableHuesped.java
-│   │   │               │       └── ResponsableJuridico.java
+│   │   │               │   ├── ResponsableDePago
+│   │   │               │   │   ├── ResponsableDePago.java
+│   │   │               │   │   ├── ResponsableHuesped.java
+│   │   │               │   │   └── ResponsableJuridico.java
+│   │   │               │   └── Usuario.java
 │   │   │               ├── dto
 │   │   │               │   ├── ConsumoDTO.java
 │   │   │               │   ├── DireccionDTO.java
@@ -60,10 +65,11 @@
 │   │   │               │   ├── PagoDTO.java
 │   │   │               │   ├── PersonaDTO.java
 │   │   │               │   ├── ReservaDTO.java
-│   │   │               │   └── ResponsableDePago
-│   │   │               │       ├── ResponsableDePagoDTO.java
-│   │   │               │       ├── ResponsableHuespedDTO.java
-│   │   │               │       └── ResponsableJuridicoDTO.java
+│   │   │               │   ├── ResponsableDePago
+│   │   │               │   │   ├── ResponsableDePagoDTO.java
+│   │   │               │   │   ├── ResponsableHuespedDTO.java
+│   │   │               │   │   └── ResponsableJuridicoDTO.java
+│   │   │               │   └── UsuarioDTO.java
 │   │   │               ├── HotelBackendApplication.java
 │   │   │               └── service
 │   │   │                   ├── EstadiaService.java
@@ -73,7 +79,8 @@
 │   │   │                   ├── Mapeo
 │   │   │                   │   ├── MapearADominio.java
 │   │   │                   │   └── MapearADTO.java
-│   │   │                   └── ReservaService.java
+│   │   │                   ├── ReservaService.java
+│   │   │                   └── UsuarioService.java
 │   │   └── resources
 │   │       └── application.properties
 │   └── test
@@ -88,18 +95,23 @@
     │   └── com
     │       └── hotel
     │           └── hotel_backend
+    │               ├── config
+    │               │   ├── CorsConfig$1.class
+    │               │   └── CorsConfig.class
     │               ├── Controller
     │               │   ├── EstadiaController.class
     │               │   ├── FacturaController.class
     │               │   ├── HuespedController.class
-    │               │   └── ReservaController.class
+    │               │   ├── ReservaController.class
+    │               │   └── UsuarioController.class
     │               ├── dao
     │               │   ├── EstadiaDAO.class
     │               │   ├── FacturaDAO.class
     │               │   ├── HabitacionDAO.class
     │               │   ├── HuespedDAO.class
     │               │   ├── NotaDeCreditoDAO.class
-    │               │   └── ReservaDAO.class
+    │               │   ├── ReservaDAO.class
+    │               │   └── UsuarioDAO.class
     │               ├── domain
     │               │   ├── Direccion.class
     │               │   ├── Estadia.class
@@ -116,10 +128,11 @@
     │               │   ├── Pago.class
     │               │   ├── Persona.class
     │               │   ├── Reserva.class
-    │               │   └── ResponsableDePago
-    │               │       ├── ResponsableDePago.class
-    │               │       ├── ResponsableHuesped.class
-    │               │       └── ResponsableJuridico.class
+    │               │   ├── ResponsableDePago
+    │               │   │   ├── ResponsableDePago.class
+    │               │   │   ├── ResponsableHuesped.class
+    │               │   │   └── ResponsableJuridico.class
+    │               │   └── Usuario.class
     │               ├── dto
     │               │   ├── ConsumoDTO.class
     │               │   ├── DireccionDTO.class
@@ -137,10 +150,11 @@
     │               │   ├── PagoDTO.class
     │               │   ├── PersonaDTO.class
     │               │   ├── ReservaDTO.class
-    │               │   └── ResponsableDePago
-    │               │       ├── ResponsableDePagoDTO.class
-    │               │       ├── ResponsableHuespedDTO.class
-    │               │       └── ResponsableJuridicoDTO.class
+    │               │   ├── ResponsableDePago
+    │               │   │   ├── ResponsableDePagoDTO.class
+    │               │   │   ├── ResponsableHuespedDTO.class
+    │               │   │   └── ResponsableJuridicoDTO.class
+    │               │   └── UsuarioDTO.class
     │               ├── HotelBackendApplication.class
     │               └── service
     │                   ├── EstadiaService.class
@@ -150,7 +164,8 @@
     │                   ├── Mapeo
     │                   │   ├── MapearADominio.class
     │                   │   └── MapearADTO.class
-    │                   └── ReservaService.class
+    │                   ├── ReservaService.class
+    │                   └── UsuarioService.class
     ├── generated-sources
     │   └── annotations
     ├── generated-test-sources
@@ -171,9 +186,40 @@
                 └── hotel_backend
                     └── HotelBackendApplicationTests.class
 
-52 directories, 118 files
+54 directories, 131 files
 
 -----------------------------------
+
+// [src/main/java/com/hotel/hotel_backend/config/CorsConfig.java]
+package com.hotel.hotel_backend.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+
+                registry.addMapping("/**")
+        .allowedOrigins("*")
+        .allowedMethods("*")
+        .allowedHeaders("*")
+        .allowCredentials(false);
+
+            }
+        };
+    }
+}
+
+
 
 // [src/main/java/com/hotel/hotel_backend/Controller/EstadiaController.java]
 // [src/main/java/com/hotel/hotel_backend/Controller/EstadiaController.java]
@@ -401,10 +447,17 @@ public class HuespedController {
     public ResponseEntity<?> crear(@RequestBody HuespedDTO dto) {
         try {
             return ResponseEntity.ok(service.crearHuesped(dto));
+
         } catch (RuntimeException e) {
+
+            if (e.getMessage().equals("CUIT_DUPLICADO")) {
+                return ResponseEntity.status(409).body("CUIT_DUPLICADO");
+            }
+
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     // MODIFICAR
     @PutMapping
@@ -511,6 +564,54 @@ public class ReservaController {
         try {
             ReservaDTO respuesta = reservaService.cancelarReserva(dto);
             return ResponseEntity.ok(respuesta);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
+
+
+
+// [src/main/java/com/hotel/hotel_backend/Controller/UsuarioController.java]
+package com.hotel.hotel_backend.Controller;
+
+import com.hotel.hotel_backend.dto.UsuarioDTO;
+import com.hotel.hotel_backend.service.UsuarioService;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
+
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    // ============================================================
+    //                AUTENTICAR USUARIO (LOGIN)
+    // ============================================================
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UsuarioDTO dto) {
+        try {
+            return ResponseEntity.ok(
+                    usuarioService.autenticar(dto.getUsername(), dto.getPassword())
+            );
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // ============================================================
+    //                CREAR USUARIO (opcional)
+    // ============================================================
+    @PostMapping
+    public ResponseEntity<?> crear(@RequestBody UsuarioDTO dto) {
+        try {
+            return ResponseEntity.ok(usuarioService.crearUsuario(dto));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -672,6 +773,9 @@ public interface HuespedDAO extends JpaRepository<Huesped, String> {
             @Param("tipoDocumento") String tipoDocumento,
             @Param("numeroDocumento") String numeroDocumento
     );
+
+    List<Huesped> findAllByCuit(String cuit);
+
 }
 
 
@@ -730,6 +834,21 @@ public interface ReservaDAO extends JpaRepository<Reserva, Integer> {
             @Param("inicio") LocalDate inicio,
             @Param("fin") LocalDate fin
     );
+}
+
+
+
+// [src/main/java/com/hotel/hotel_backend/dao/UsuarioDAO.java]
+package com.hotel.hotel_backend.dao;
+
+import com.hotel.hotel_backend.domain.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UsuarioDAO extends JpaRepository<Usuario, Integer> {
+
+    Optional<Usuario> findByUsername(String username);
 }
 
 
@@ -1758,6 +1877,53 @@ public class ResponsableJuridico extends ResponsableDePago {
 
 
 
+// [src/main/java/com/hotel/hotel_backend/domain/Usuario.java]
+package com.hotel.hotel_backend.domain;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "usuario")
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usuario_id")
+    private Integer id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password; // En esta etapa se permite texto plano
+
+    @Column(nullable = false)
+    private String rol; // admin, recepcion, gerente, etc.
+
+    public Usuario() {}
+
+    public Usuario(Integer id, String username, String password, String rol) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.rol = rol;
+    }
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
+}
+
+
+
 // [src/main/java/com/hotel/hotel_backend/dto/ConsumoDTO.java]
 package com.hotel.hotel_backend.dto;
 
@@ -2031,6 +2197,10 @@ public class HuespedDTO {
 
     private DireccionDTO direccion; // puede ser null
     private String condicionIVA;    // puede ser null
+
+    private boolean forzar;
+    public boolean isForzar() { return forzar; }
+    public void setForzar(boolean forzar) { this.forzar = forzar; }
 
     public HuespedDTO() {}
 
@@ -2454,6 +2624,33 @@ public class ResponsableJuridicoDTO extends ResponsableDePagoDTO {
 
     public String getCuit() { return cuit; }
     public void setCuit(String cuit) { this.cuit = cuit; }
+}
+
+
+
+// [src/main/java/com/hotel/hotel_backend/dto/UsuarioDTO.java]
+package com.hotel.hotel_backend.dto;
+
+public class UsuarioDTO {
+
+    private Integer id;
+    private String username;
+    private String password;
+    private String rol;
+
+    public UsuarioDTO() {}
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
 }
 
 
@@ -3007,20 +3204,27 @@ public class HuespedService {
 
         Huesped h = MapearADominio.mapearHuesped(dto);
 
+        // Validar documento duplicado
         if (huespedDAO.existsByNumeroDocumento(h.getNumeroDocumento())) {
             throw new RuntimeException("Ya existe un huésped con ese número de documento.");
         }
 
+        // Validar CUIT duplicado
         if (h.getCuit() != null && !h.getCuit().isEmpty()) {
-            huespedDAO.findByCuit(h.getCuit()).ifPresent(x -> {
-                throw new RuntimeException("Ya existe un huésped con ese CUIT.");
-            });
+            List<Huesped> coincidencias = huespedDAO.findAllByCuit(h.getCuit());
+
+            if (!dto.isForzar() && !coincidencias.isEmpty()) {
+                throw new RuntimeException("CUIT_DUPLICADO");
+            }
+
+
         }
 
         huespedDAO.save(h);
 
         return MapearADTO.mapearHuesped(h);
     }
+
 
     // ==========================================================
     //                   MODIFICAR HUESPED
@@ -3702,6 +3906,65 @@ public class ReservaService {
         if (s == null || s.isEmpty())
             throw new RuntimeException("Fecha obligatoria.");
         return LocalDate.parse(s);
+    }
+}
+
+
+
+// [src/main/java/com/hotel/hotel_backend/service/UsuarioService.java]
+package com.hotel.hotel_backend.service;
+
+import com.hotel.hotel_backend.dao.UsuarioDAO;
+import com.hotel.hotel_backend.domain.Usuario;
+import com.hotel.hotel_backend.dto.UsuarioDTO;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UsuarioService {
+
+    private final UsuarioDAO usuarioDAO;
+
+    public UsuarioService(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
+    }
+
+    // ============================================================
+    //                  AUTENTICAR USUARIO (CU01)
+    // ============================================================
+    public UsuarioDTO autenticar(String username, String password) {
+
+        Usuario usuario = usuarioDAO.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
+
+        if (!usuario.getPassword().equals(password)) {
+            throw new RuntimeException("Contraseña incorrecta.");
+        }
+
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(usuario.getId());
+        dto.setUsername(usuario.getUsername());
+        dto.setRol(usuario.getRol());
+        dto.setPassword(null); // nunca devolver password
+
+        return dto;
+    }
+
+    // ============================================================
+    //                 CREAR USUARIO (opcional)
+    // ============================================================
+    public UsuarioDTO crearUsuario(UsuarioDTO dto) {
+
+        Usuario u = new Usuario();
+        u.setUsername(dto.getUsername());
+        u.setPassword(dto.getPassword());
+        u.setRol(dto.getRol());
+
+        usuarioDAO.save(u);
+
+        dto.setId(u.getId());
+        dto.setPassword(null);
+
+        return dto;
     }
 }
 

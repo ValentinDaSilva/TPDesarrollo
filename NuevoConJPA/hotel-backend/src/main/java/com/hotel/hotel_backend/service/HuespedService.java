@@ -27,20 +27,27 @@ public class HuespedService {
 
         Huesped h = MapearADominio.mapearHuesped(dto);
 
+        // Validar documento duplicado
         if (huespedDAO.existsByNumeroDocumento(h.getNumeroDocumento())) {
             throw new RuntimeException("Ya existe un huésped con ese número de documento.");
         }
 
+        // Validar CUIT duplicado
         if (h.getCuit() != null && !h.getCuit().isEmpty()) {
-            huespedDAO.findByCuit(h.getCuit()).ifPresent(x -> {
-                throw new RuntimeException("Ya existe un huésped con ese CUIT.");
-            });
+            List<Huesped> coincidencias = huespedDAO.findAllByCuit(h.getCuit());
+
+            if (!dto.isForzar() && !coincidencias.isEmpty()) {
+                throw new RuntimeException("CUIT_DUPLICADO");
+            }
+
+
         }
 
         huespedDAO.save(h);
 
         return MapearADTO.mapearHuesped(h);
     }
+
 
     // ==========================================================
     //                   MODIFICAR HUESPED
