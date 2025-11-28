@@ -1,13 +1,13 @@
 package com.hotel.hotel_backend.dto.MedioDePago;
 
-public class Tarjeta extends MedioDePagoDTO {
+public class TarjetaDTO extends MedioDePagoDTO {
 
     private String tipoTarjeta;     
     private String numeroTarjeta;
 
-    public Tarjeta() {}
+    public TarjetaDTO() {}
 
-    public Tarjeta(String tipoTarjeta, String numeroTarjeta, double monto) {
+    public TarjetaDTO(String tipoTarjeta, String numeroTarjeta, double monto) {
         super(monto);
         this.tipoTarjeta = tipoTarjeta;
         this.numeroTarjeta = numeroTarjeta;

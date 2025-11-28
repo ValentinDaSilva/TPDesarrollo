@@ -9,8 +9,8 @@ public class MonedaExtranjera extends MedioDePago {
     public MonedaExtranjera() {}
 
     public MonedaExtranjera(String tipoMoneda, double montoExtranjero,
-                            double cotizacion, double montoPesos) {
-        super(montoPesos);
+                            double cotizacion, double monto) {
+        super(monto);
         this.tipoMoneda = tipoMoneda;
         this.montoExtranjero = montoExtranjero;
         this.cotizacion = cotizacion;

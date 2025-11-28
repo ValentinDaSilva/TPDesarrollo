@@ -34,7 +34,7 @@ public class EstadiaController {
     @PostMapping
     public ResponseEntity<?> generar(@RequestBody EstadiaDTO dto) {
         try {
-            EstadiaDTO respuesta = estadiaService.generarEstadia(dto);
+            String respuesta = estadiaService.generarEstadia(dto);
             return ResponseEntity.ok(respuesta);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

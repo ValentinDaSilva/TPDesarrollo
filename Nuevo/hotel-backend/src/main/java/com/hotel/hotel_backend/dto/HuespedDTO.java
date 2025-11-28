@@ -1,11 +1,10 @@
 package com.hotel.hotel_backend.dto;
 
 public class HuespedDTO {
-
     private String nombre;
     private String apellido;
     private String tipoDocumento;
-    private String nroDocumento;
+    private String numeroDocumento;
     private String ocupacion;
     private String nacionalidad;
     private String cuit;
@@ -25,8 +24,8 @@ public class HuespedDTO {
     public String getTipoDocumento() { return tipoDocumento; }
     public void setTipoDocumento(String tipoDocumento) { this.tipoDocumento = tipoDocumento; }
 
-    public String getNroDocumento() { return nroDocumento; }
-    public void setNroDocumento(String nroDocumento) { this.nroDocumento = nroDocumento; }
+    public String getnumeroDocumento() { return numeroDocumento; }
+    public void setnumeroDocumento(String numeroDocumento) { this.numeroDocumento = numeroDocumento; }
 
     public String getOcupacion() { return ocupacion; }
     public void setOcupacion(String ocupacion) { this.ocupacion = ocupacion; }

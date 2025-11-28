@@ -1,6 +1,5 @@
 package com.hotel.hotel_backend.domain;
 
-import com.hotel.hotel_backend.dto.HuespedDTO;
 
 public class Huesped {
 
@@ -127,49 +126,6 @@ public class Huesped {
                 ? direccion.getCalle() + " " + direccion.getNumero() + ", " +
                   direccion.getLocalidad() + ", " + direccion.getProvincia()
                 : "";
-    }
-
-    public static HuespedDTO mapearHuespedDTO(Huesped h) {
-        if (h == null) return null;
-
-        HuespedDTO x = new HuespedDTO();
-        x.setNombre(h.getNombre());
-        x.setApellido(h.getApellido());
-        x.setTipoDocumento(h.getTipoDocumento());
-        x.setNroDocumento(h.getNumeroDocumento());
-        x.setOcupacion(h.getOcupacion());
-        x.setNacionalidad(h.getNacionalidad());
-        x.setCuit(h.getCuit());
-        x.setEmail(h.getEmail());
-        x.setCondicionIVA(h.getPosicionIVA());
-
-        if (h.getDireccion() != null) {
-            x.setDireccion(Direccion.mapearDireccionADTO(h.getDireccion()));
-        }
-
-        return x;
-    }
-
-    public static Huesped mapearHuespedDominio(HuespedDTO dto) {
-        if (dto == null) return null;
-
-        Direccion direccion = null;
-        if (dto.getDireccion() != null) {
-            direccion = Direccion.mapearDireccionDominio(dto.getDireccion());
-        }
-
-        return new Huesped(
-            dto.getApellido(),
-            dto.getNombre(),
-            dto.getTipoDocumento(),
-            dto.getNroDocumento(),
-            dto.getCuit(),
-            dto.getCondicionIVA(),
-            direccion,
-            dto.getEmail(),
-            dto.getOcupacion(),
-            dto.getNacionalidad()
-        );
     }
 
 }
