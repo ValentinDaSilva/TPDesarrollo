@@ -49,6 +49,7 @@ public class MapearADTO {
     dto.setEmail(h.getEmail());
     dto.setOcupacion(h.getOcupacion());
     dto.setNacionalidad(h.getNacionalidad());
+    dto.setTelefono(h.getTelefono());
 
     Direccion dir = h.getDireccion();
     if (dir != null) {

@@ -12,7 +12,7 @@ public class HuespedDTO {
     private String email;
 
     private DireccionDTO direccion; // puede ser null
-    private String condicionIVA;    // puede ser null
+    private String telefono;        // puede ser null
 
     private boolean forzar;
     public boolean isForzar() { return forzar; }
@@ -47,6 +47,6 @@ public class HuespedDTO {
     public DireccionDTO getDireccion() { return direccion; }
     public void setDireccion(DireccionDTO direccion) { this.direccion = direccion; }
 
-    public String getCondicionIVA() { return condicionIVA; }
-    public void setCondicionIVA(String condicionIVA) { this.condicionIVA = condicionIVA; }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 }

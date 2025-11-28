@@ -18,12 +18,13 @@ public class Huesped {
     private String email;
     private String ocupacion;
     private String nacionalidad;
+    private String telefono;
     public Huesped() {
     }
 
     public Huesped(String apellido, String nombre, String tipoDocumento, String numeroDocumento,
                    String cuit, Direccion direccion,
-                   String email, String ocupacion, String nacionalidad) {
+                   String email, String ocupacion, String nacionalidad, String telefono) {
         this.apellido = apellido;
         this.nombre = nombre;
         this.tipoDocumento = tipoDocumento;
@@ -33,6 +34,7 @@ public class Huesped {
         this.email = email;
         this.ocupacion = ocupacion;
         this.nacionalidad = nacionalidad;
+        this.telefono = telefono;
     }
 
     // ======== Getters y Setters ========
@@ -109,6 +111,14 @@ public class Huesped {
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
     
 
