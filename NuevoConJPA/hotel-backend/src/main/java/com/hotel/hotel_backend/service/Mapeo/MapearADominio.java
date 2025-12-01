@@ -37,6 +37,7 @@ public class MapearADominio {
 
         Huesped h = new Huesped();
 
+        h.setId(dto.getId());
         h.setNumeroDocumento(dto.getNumeroDocumento());
         h.setApellido(dto.getApellido());
         h.setNombre(dto.getNombre());

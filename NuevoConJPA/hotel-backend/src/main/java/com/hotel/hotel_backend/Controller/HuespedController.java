@@ -22,13 +22,7 @@ public class HuespedController {
     public ResponseEntity<?> crear(@RequestBody HuespedDTO dto) {
         try {
             return ResponseEntity.ok(service.crearHuesped(dto));
-
         } catch (RuntimeException e) {
-
-            if (e.getMessage().equals("CUIT_DUPLICADO")) {
-                return ResponseEntity.status(409).body("CUIT_DUPLICADO");
-            }
-
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -74,12 +68,15 @@ public class HuespedController {
     }
 
     // ELIMINAR
-    @DeleteMapping("/{documento}")
-    public ResponseEntity<?> eliminar(@PathVariable String documento) {
+    @DeleteMapping
+    public ResponseEntity<?> eliminar(@RequestBody HuespedDTO dto) {
         try {
-            service.eliminarHuesped(documento);
+            service.eliminarHuesped(dto);
             return ResponseEntity.ok("Huésped eliminado correctamente.");
         } catch (RuntimeException e) {
+            if (e.getMessage().equals("CONFIRMAR_ELIMINACION")) {
+                return ResponseEntity.status(409).body("CONFIRMAR_ELIMINACION");
+            }
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

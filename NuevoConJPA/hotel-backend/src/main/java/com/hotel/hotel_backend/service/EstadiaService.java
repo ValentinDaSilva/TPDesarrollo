@@ -78,13 +78,23 @@ public class EstadiaService {
         // ------------------------------------------------
         // Validación del titular
         // ------------------------------------------------
-        if (dto.getTitular() == null || dto.getTitular().getNumeroDocumento() == null)
-            throw new RuntimeException("Debe enviar el titular con número de documento.");
+        if (dto.getTitular() == null)
+            throw new RuntimeException("Debe enviar el titular.");
 
-        Huesped titular = huespedDAO.findByNumeroDocumento(dto.getTitular().getNumeroDocumento())
-                .orElseThrow(() -> new RuntimeException(
-                        "No existe huésped con documento " + dto.getTitular().getNumeroDocumento()
-                ));
+        Huesped titular;
+        if (dto.getTitular().getId() != null) {
+            titular = huespedDAO.findById(dto.getTitular().getId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "No existe huésped con ID " + dto.getTitular().getId()
+                    ));
+        } else if (dto.getTitular().getNumeroDocumento() != null) {
+            titular = huespedDAO.findByNumeroDocumento(dto.getTitular().getNumeroDocumento())
+                    .orElseThrow(() -> new RuntimeException(
+                            "No existe huésped con documento " + dto.getTitular().getNumeroDocumento()
+                    ));
+        } else {
+            throw new RuntimeException("Debe enviar el titular con ID o número de documento.");
+        }
 
         // ------------------------------------------------
         // Acompañantes
@@ -92,10 +102,20 @@ public class EstadiaService {
         List<Huesped> acompaniantes = new ArrayList<>();
         if (dto.getAcompaniantes() != null) {
             for (HuespedDTO hDto : dto.getAcompaniantes()) {
-                Huesped h = huespedDAO.findByNumeroDocumento(hDto.getNumeroDocumento())
-                        .orElseThrow(() -> new RuntimeException(
-                                "No existe acompañante con documento " + hDto.getNumeroDocumento()
-                        ));
+                Huesped h;
+                if (hDto.getId() != null) {
+                    h = huespedDAO.findById(hDto.getId())
+                            .orElseThrow(() -> new RuntimeException(
+                                    "No existe acompañante con ID " + hDto.getId()
+                            ));
+                } else if (hDto.getNumeroDocumento() != null) {
+                    h = huespedDAO.findByNumeroDocumento(hDto.getNumeroDocumento())
+                            .orElseThrow(() -> new RuntimeException(
+                                    "No existe acompañante con documento " + hDto.getNumeroDocumento()
+                            ));
+                } else {
+                    throw new RuntimeException("Debe enviar cada acompañante con ID o número de documento.");
+                }
                 acompaniantes.add(h);
             }
         }

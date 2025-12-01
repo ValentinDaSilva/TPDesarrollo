@@ -8,6 +8,10 @@ import java.time.LocalDate;
 public class Huesped {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "huesped_id")
+    private Long id;
+    
     @Column(name = "numero_documento")
     private String numeroDocumento;
     private String apellido;
@@ -41,6 +45,14 @@ public class Huesped {
     }
 
     // ======== Getters y Setters ========
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getApellido() {
         return apellido;

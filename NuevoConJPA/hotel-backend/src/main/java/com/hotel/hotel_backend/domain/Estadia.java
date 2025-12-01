@@ -37,14 +37,14 @@ public class Estadia {
     private Reserva reserva;
 
     @ManyToOne
-    @JoinColumn(name = "titular_documento")
+    @JoinColumn(name = "titular_id")
     private Huesped titular;
 
     @ManyToMany
     @JoinTable(
             name = "estadia_acompaniantes",
             joinColumns = @JoinColumn(name = "estadia_id"),
-            inverseJoinColumns = @JoinColumn(name = "acompaniante_documento")
+            inverseJoinColumns = @JoinColumn(name = "acompaniante_id")
     )
     private List<Huesped> acompaniantes;
 

@@ -41,6 +41,7 @@ public class MapearADTO {
 
     HuespedDTO dto = new HuespedDTO();
 
+    dto.setId(h.getId());
     dto.setNumeroDocumento(h.getNumeroDocumento());
     dto.setApellido(h.getApellido());
     dto.setNombre(h.getNombre());

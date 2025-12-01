@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.List;
 
 @Repository
-public interface HuespedDAO extends JpaRepository<Huesped, String> {
+public interface HuespedDAO extends JpaRepository<Huesped, Long> {
 
     // Buscar por documento (ID principal)
     Optional<Huesped> findByNumeroDocumento(String numeroDocumento);

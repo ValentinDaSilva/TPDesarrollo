@@ -4,6 +4,7 @@ package com.hotel.hotel_backend.dto;
 import java.time.LocalDate;
 
 public class HuespedDTO {
+    private Long id;
     private String nombre;
     private String apellido;
     private String tipoDocumento;
@@ -22,6 +23,9 @@ public class HuespedDTO {
     public void setForzar(boolean forzar) { this.forzar = forzar; }
 
     public HuespedDTO() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }

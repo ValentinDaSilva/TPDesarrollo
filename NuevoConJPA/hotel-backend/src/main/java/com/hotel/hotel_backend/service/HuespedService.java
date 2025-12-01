@@ -27,22 +27,6 @@ public class HuespedService {
 
         Huesped h = MapearADominio.mapearHuesped(dto);
 
-        // Validar documento duplicado
-        if (huespedDAO.existsByNumeroDocumento(h.getNumeroDocumento())) {
-            throw new RuntimeException("Ya existe un huésped con ese número de documento.");
-        }
-
-        // Validar CUIT duplicado
-        if (h.getCuit() != null && !h.getCuit().isEmpty()) {
-            List<Huesped> coincidencias = huespedDAO.findAllByCuit(h.getCuit());
-
-            if (!dto.isForzar() && !coincidencias.isEmpty()) {
-                throw new RuntimeException("CUIT_DUPLICADO");
-            }
-
-
-        }
-
         huespedDAO.save(h);
 
         return MapearADTO.mapearHuesped(h);
@@ -54,15 +38,16 @@ public class HuespedService {
     // ==========================================================
     public HuespedDTO modificarHuesped(HuespedDTO dto) {
 
-        if (dto.getNumeroDocumento() == null) {
-            throw new RuntimeException("Debe enviar documento del huésped a modificar.");
+        if (dto.getId() == null) {
+            throw new RuntimeException("Debe enviar ID del huésped a modificar.");
         }
 
-        Huesped existente = huespedDAO.findByNumeroDocumento(dto.getNumeroDocumento())
-                .orElseThrow(() -> new RuntimeException("No existe un huésped con ese documento."));
+        Huesped existente = huespedDAO.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("No existe un huésped con ese ID."));
 
         Huesped nuevosDatos = MapearADominio.mapearHuesped(dto);
 
+        existente.setNumeroDocumento(nuevosDatos.getNumeroDocumento());
         existente.setApellido(nuevosDatos.getApellido());
         existente.setNombre(nuevosDatos.getNombre());
         existente.setTipoDocumento(nuevosDatos.getTipoDocumento());
@@ -114,10 +99,20 @@ public class HuespedService {
     // ==========================================================
     //                     ELIMINAR
     // ==========================================================
-    public void eliminarHuesped(String documento) {
-        Huesped h = huespedDAO.findByNumeroDocumento(documento)
+    public void eliminarHuesped(HuespedDTO dto) {
+        if (dto.getId() == null) {
+            throw new RuntimeException("Debe enviar ID del huésped a eliminar.");
+        }
+
+        Huesped h = huespedDAO.findById(dto.getId())
                 .orElseThrow(() ->
-                        new RuntimeException("No existe un huésped con ese documento."));
+                        new RuntimeException("No existe un huésped con ese ID."));
+
+        // Validar confirmación con booleano forzar
+        if (!dto.isForzar()) {
+            throw new RuntimeException("CONFIRMAR_ELIMINACION");
+        }
+
         huespedDAO.delete(h);
     }
 }
