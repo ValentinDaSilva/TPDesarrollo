@@ -23,6 +23,9 @@ public class HuespedController {
         try {
             return ResponseEntity.ok(service.crearHuesped(dto));
         } catch (RuntimeException e) {
+            if (e.getMessage().equals("DNI_DUPLICADO")) {
+                return ResponseEntity.status(409).body("DNI_DUPLICADO");
+            }
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

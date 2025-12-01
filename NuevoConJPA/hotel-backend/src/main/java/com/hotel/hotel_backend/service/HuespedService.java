@@ -27,6 +27,15 @@ public class HuespedService {
 
         Huesped h = MapearADominio.mapearHuesped(dto);
 
+        // Validar documento duplicado
+        if (h.getNumeroDocumento() != null && !h.getNumeroDocumento().isEmpty()) {
+            boolean existeDocumento = huespedDAO.existsByNumeroDocumento(h.getNumeroDocumento());
+            
+            if (existeDocumento && !dto.isForzar()) {
+                throw new RuntimeException("DNI_DUPLICADO");
+            }
+        }
+
         huespedDAO.save(h);
 
         return MapearADTO.mapearHuesped(h);
