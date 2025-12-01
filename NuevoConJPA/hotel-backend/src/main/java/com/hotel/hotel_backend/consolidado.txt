@@ -1,231 +1,84 @@
 📂 Estructura del proyecto (.):
 -----------------------------------
 .
+├── config
+│   └── CorsConfig.java
 ├── consolidado.txt
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── hotel
-│   │   │           └── hotel_backend
-│   │   │               ├── config
-│   │   │               │   └── CorsConfig.java
-│   │   │               ├── consolidado.txt
-│   │   │               ├── Controller
-│   │   │               │   ├── EstadiaController.java
-│   │   │               │   ├── FacturaController.java
-│   │   │               │   ├── HabitacionController.java
-│   │   │               │   ├── HuespedController.java
-│   │   │               │   ├── ReservaController.java
-│   │   │               │   └── UsuarioController.java
-│   │   │               ├── dao
-│   │   │               │   ├── EstadiaDAO.java
-│   │   │               │   ├── FacturaDAO.java
-│   │   │               │   ├── HabitacionDAO.java
-│   │   │               │   ├── HuespedDAO.java
-│   │   │               │   ├── NotaDeCreditoDAO.java
-│   │   │               │   ├── ReservaDAO.java
-│   │   │               │   └── UsuarioDAO.java
-│   │   │               ├── domain
-│   │   │               │   ├── Direccion.java
-│   │   │               │   ├── Estadia.java
-│   │   │               │   ├── Factura.java
-│   │   │               │   ├── Habitacion.java
-│   │   │               │   ├── Huesped.java
-│   │   │               │   ├── MedioDePago
-│   │   │               │   │   ├── Cheque.java
-│   │   │               │   │   ├── Efectivo.java
-│   │   │               │   │   ├── MedioDePago.java
-│   │   │               │   │   ├── MonedaExtranjera.java
-│   │   │               │   │   └── Tarjeta.java
-│   │   │               │   ├── NotaDeCredito.java
-│   │   │               │   ├── Pago.java
-│   │   │               │   ├── Persona.java
-│   │   │               │   ├── Reserva.java
-│   │   │               │   ├── ResponsableDePago
-│   │   │               │   │   ├── ResponsableDePago.java
-│   │   │               │   │   ├── ResponsableHuesped.java
-│   │   │               │   │   └── ResponsableJuridico.java
-│   │   │               │   └── Usuario.java
-│   │   │               ├── dto
-│   │   │               │   ├── ConsumoDTO.java
-│   │   │               │   ├── DireccionDTO.java
-│   │   │               │   ├── EstadiaDTO.java
-│   │   │               │   ├── FacturaDTO.java
-│   │   │               │   ├── HabitacionDTO.java
-│   │   │               │   ├── HuespedDTO.java
-│   │   │               │   ├── MedioDePago
-│   │   │               │   │   ├── ChequeDTO.java
-│   │   │               │   │   ├── EfectivoDTO.java
-│   │   │               │   │   ├── MedioDePagoDTO.java
-│   │   │               │   │   ├── MonedaExtranjeraDTO.java
-│   │   │               │   │   └── TarjetaDTO.java
-│   │   │               │   ├── NotaDeCreditoDTO.java
-│   │   │               │   ├── PagoDTO.java
-│   │   │               │   ├── PersonaDTO.java
-│   │   │               │   ├── ReservaDTO.java
-│   │   │               │   ├── ResponsableDePago
-│   │   │               │   │   ├── ResponsableDePagoDTO.java
-│   │   │               │   │   ├── ResponsableHuespedDTO.java
-│   │   │               │   │   └── ResponsableJuridicoDTO.java
-│   │   │               │   └── UsuarioDTO.java
-│   │   │               ├── HotelBackendApplication.java
-│   │   │               └── service
-│   │   │                   ├── EstadiaService.java
-│   │   │                   ├── FacturaService.java
-│   │   │                   ├── HabitacionService.java
-│   │   │                   ├── HuespedService.java
-│   │   │                   ├── Mapeo
-│   │   │                   │   ├── MapearADominio.java
-│   │   │                   │   └── MapearADTO.java
-│   │   │                   ├── ReservaService.java
-│   │   │                   └── UsuarioService.java
-│   │   └── resources
-│   │       └── application.properties
-│   └── test
-│       └── java
-│           └── com
-│               └── hotel
-│                   └── hotel_backend
-│                       └── HotelBackendApplicationTests.java
-└── target
-    ├── classes
-    │   ├── application.properties
-    │   └── com
-    │       └── hotel
-    │           └── hotel_backend
-    │               ├── config
-    │               │   ├── CorsConfig$1.class
-    │               │   └── CorsConfig.class
-    │               ├── consolidado.txt
-    │               ├── Controller
-    │               │   ├── EstadiaController.class
-    │               │   ├── FacturaController.class
-    │               │   ├── HabitacionController.class
-    │               │   ├── HuespedController.class
-    │               │   ├── ReservaController.class
-    │               │   └── UsuarioController.class
-    │               ├── dao
-    │               │   ├── EstadiaDAO.class
-    │               │   ├── FacturaDAO.class
-    │               │   ├── HabitacionDAO.class
-    │               │   ├── HuespedDAO.class
-    │               │   ├── NotaDeCreditoDAO.class
-    │               │   ├── ReservaDAO.class
-    │               │   └── UsuarioDAO.class
-    │               ├── domain
-    │               │   ├── Direccion.class
-    │               │   ├── Estadia.class
-    │               │   ├── Factura.class
-    │               │   ├── Habitacion.class
-    │               │   ├── Huesped.class
-    │               │   ├── MedioDePago
-    │               │   │   ├── Cheque.class
-    │               │   │   ├── Efectivo.class
-    │               │   │   ├── MedioDePago.class
-    │               │   │   ├── MonedaExtranjera.class
-    │               │   │   └── Tarjeta.class
-    │               │   ├── NotaDeCredito.class
-    │               │   ├── Pago.class
-    │               │   ├── Persona.class
-    │               │   ├── Reserva.class
-    │               │   ├── ResponsableDePago
-    │               │   │   ├── ResponsableDePago.class
-    │               │   │   ├── ResponsableHuesped.class
-    │               │   │   └── ResponsableJuridico.class
-    │               │   └── Usuario.class
-    │               ├── dto
-    │               │   ├── ConsumoDTO.class
-    │               │   ├── DireccionDTO.class
-    │               │   ├── EstadiaDTO.class
-    │               │   ├── FacturaDTO.class
-    │               │   ├── HabitacionDTO.class
-    │               │   ├── HuespedDTO.class
-    │               │   ├── MedioDePago
-    │               │   │   ├── ChequeDTO.class
-    │               │   │   ├── EfectivoDTO.class
-    │               │   │   ├── MedioDePagoDTO.class
-    │               │   │   ├── MonedaExtranjeraDTO.class
-    │               │   │   └── TarjetaDTO.class
-    │               │   ├── NotaDeCreditoDTO.class
-    │               │   ├── PagoDTO.class
-    │               │   ├── PersonaDTO.class
-    │               │   ├── ReservaDTO.class
-    │               │   ├── ResponsableDePago
-    │               │   │   ├── ResponsableDePagoDTO.class
-    │               │   │   ├── ResponsableHuespedDTO.class
-    │               │   │   └── ResponsableJuridicoDTO.class
-    │               │   └── UsuarioDTO.class
-    │               ├── HotelBackendApplication.class
-    │               └── service
-    │                   ├── EstadiaService.class
-    │                   ├── FacturaService.class
-    │                   ├── HabitacionService.class
-    │                   ├── HuespedService.class
-    │                   ├── Mapeo
-    │                   │   ├── MapearADominio.class
-    │                   │   └── MapearADTO.class
-    │                   ├── ReservaService.class
-    │                   └── UsuarioService.class
-    ├── generated-sources
-    │   └── annotations
-    ├── generated-test-sources
-    │   └── test-annotations
-    ├── maven-status
-    │   └── maven-compiler-plugin
-    │       ├── compile
-    │       │   └── default-compile
-    │       │       ├── createdFiles.lst
-    │       │       └── inputFiles.lst
-    │       └── testCompile
-    │           └── default-testCompile
-    │               ├── createdFiles.lst
-    │               └── inputFiles.lst
-    └── test-classes
-        └── com
-            └── hotel
-                └── hotel_backend
-                    └── HotelBackendApplicationTests.class
+├── Controller
+│   ├── EstadiaController.java
+│   ├── FacturaController.java
+│   ├── HabitacionController.java
+│   ├── HuespedController.java
+│   ├── ReservaController.java
+│   └── UsuarioController.java
+├── dao
+│   ├── EstadiaDAO.java
+│   ├── FacturaDAO.java
+│   ├── HabitacionDAO.java
+│   ├── HuespedDAO.java
+│   ├── NotaDeCreditoDAO.java
+│   ├── ReservaDAO.java
+│   └── UsuarioDAO.java
+├── domain
+│   ├── Direccion.java
+│   ├── Estadia.java
+│   ├── Factura.java
+│   ├── Habitacion.java
+│   ├── Huesped.java
+│   ├── MedioDePago
+│   │   ├── Cheque.java
+│   │   ├── Efectivo.java
+│   │   ├── MedioDePago.java
+│   │   ├── MonedaExtranjera.java
+│   │   └── Tarjeta.java
+│   ├── NotaDeCredito.java
+│   ├── Pago.java
+│   ├── Persona.java
+│   ├── Reserva.java
+│   ├── ResponsableDePago
+│   │   ├── ResponsableDePago.java
+│   │   ├── ResponsableHuesped.java
+│   │   └── ResponsableJuridico.java
+│   └── Usuario.java
+├── dto
+│   ├── ConsumoDTO.java
+│   ├── DireccionDTO.java
+│   ├── EstadiaDTO.java
+│   ├── FacturaDTO.java
+│   ├── HabitacionDTO.java
+│   ├── HuespedDTO.java
+│   ├── MedioDePago
+│   │   ├── ChequeDTO.java
+│   │   ├── EfectivoDTO.java
+│   │   ├── MedioDePagoDTO.java
+│   │   ├── MonedaExtranjeraDTO.java
+│   │   └── TarjetaDTO.java
+│   ├── NotaDeCreditoDTO.java
+│   ├── PagoDTO.java
+│   ├── PersonaDTO.java
+│   ├── ReservaDTO.java
+│   ├── ResponsableDePago
+│   │   ├── ResponsableDePagoDTO.java
+│   │   ├── ResponsableHuespedDTO.java
+│   │   └── ResponsableJuridicoDTO.java
+│   └── UsuarioDTO.java
+├── HotelBackendApplication.java
+└── service
+    ├── EstadiaService.java
+    ├── FacturaService.java
+    ├── HabitacionService.java
+    ├── HuespedService.java
+    ├── Mapeo
+    │   ├── MapearADominio.java
+    │   └── MapearADTO.java
+    ├── ReservaService.java
+    └── UsuarioService.java
 
-54 directories, 135 files
+12 directories, 61 files
 
 -----------------------------------
 
-// [src/main/java/com/hotel/hotel_backend/config/CorsConfig.java]
-package com.hotel.hotel_backend.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-@Configuration
-public class CorsConfig {
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-
-                registry.addMapping("/**")
-        .allowedOrigins("*")
-        .allowedMethods("*")
-        .allowedHeaders("*")
-        .allowCredentials(false);
-
-            }
-        };
-    }
-}
-
-
-
-// [src/main/java/com/hotel/hotel_backend/Controller/EstadiaController.java]
+// [Controller/EstadiaController.java]
 // [src/main/java/com/hotel/hotel_backend/Controller/EstadiaController.java]
 package com.hotel.hotel_backend.Controller;
 
@@ -289,7 +142,7 @@ public class EstadiaController {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/Controller/FacturaController.java]
+// [Controller/FacturaController.java]
 // [src/main/java/com/hotel/hotel_backend/Controller/FacturaController.java]
 package com.hotel.hotel_backend.Controller;
 
@@ -426,7 +279,7 @@ public class FacturaController {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/Controller/HabitacionController.java]
+// [Controller/HabitacionController.java]
 package com.hotel.hotel_backend.Controller;
 
 import com.hotel.hotel_backend.domain.Habitacion;
@@ -469,7 +322,7 @@ public class HabitacionController {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/Controller/HuespedController.java]
+// [Controller/HuespedController.java]
 // [src/main/java/com/hotel/hotel_backend/Controller/HuespedController.java]
 package com.hotel.hotel_backend.Controller;
 
@@ -559,7 +412,7 @@ public class HuespedController {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/Controller/ReservaController.java]
+// [Controller/ReservaController.java]
 // [src/main/java/com/hotel/hotel_backend/Controller/ReservaController.java]
 package com.hotel.hotel_backend.Controller;
 
@@ -619,7 +472,7 @@ public class ReservaController {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/Controller/UsuarioController.java]
+// [Controller/UsuarioController.java]
 package com.hotel.hotel_backend.Controller;
 
 import com.hotel.hotel_backend.dto.UsuarioDTO;
@@ -667,7 +520,7 @@ public class UsuarioController {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/EstadiaDAO.java]
+// [dao/EstadiaDAO.java]
 // src/main/java/com/hotel/hotel_backend/dao/EstadiaDAO.java
 package com.hotel.hotel_backend.dao;
 
@@ -702,7 +555,7 @@ public interface EstadiaDAO extends JpaRepository<Estadia, Integer> {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/FacturaDAO.java]
+// [dao/FacturaDAO.java]
 // [src/main/java/com/hotel/hotel_backend/dao/FacturaDAO.java]
 package com.hotel.hotel_backend.dao;
 
@@ -766,7 +619,7 @@ public interface FacturaDAO extends JpaRepository<Factura, Integer> {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/HabitacionDAO.java]
+// [dao/HabitacionDAO.java]
 package com.hotel.hotel_backend.dao;
 
 import com.hotel.hotel_backend.domain.Habitacion;
@@ -781,7 +634,7 @@ public interface HabitacionDAO extends JpaRepository<Habitacion, Integer> {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/HuespedDAO.java]
+// [dao/HuespedDAO.java]
 // [src/main/java/com/hotel/hotel_backend/dao/HuespedDAO.java]
 package com.hotel.hotel_backend.dao;
 
@@ -827,7 +680,7 @@ public interface HuespedDAO extends JpaRepository<Huesped, String> {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/NotaDeCreditoDAO.java]
+// [dao/NotaDeCreditoDAO.java]
 package com.hotel.hotel_backend.dao;
 
 import com.hotel.hotel_backend.domain.NotaDeCredito;
@@ -838,7 +691,7 @@ public interface NotaDeCreditoDAO extends JpaRepository<NotaDeCredito, Integer> 
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/ReservaDAO.java]
+// [dao/ReservaDAO.java]
 // [src/main/java/com/hotel/hotel_backend/dao/ReservaDAO.java]
 package com.hotel.hotel_backend.dao;
 
@@ -885,7 +738,7 @@ public interface ReservaDAO extends JpaRepository<Reserva, Integer> {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dao/UsuarioDAO.java]
+// [dao/UsuarioDAO.java]
 package com.hotel.hotel_backend.dao;
 
 import com.hotel.hotel_backend.domain.Usuario;
@@ -900,7 +753,7 @@ public interface UsuarioDAO extends JpaRepository<Usuario, Integer> {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Direccion.java]
+// [domain/Direccion.java]
 package com.hotel.hotel_backend.domain;
 
 import com.hotel.hotel_backend.dto.DireccionDTO;
@@ -980,7 +833,7 @@ public class Direccion {
 }
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Estadia.java]
+// [domain/Estadia.java]
 // src/main/java/com/hotel/hotel_backend/domain/Estadia.java
 package com.hotel.hotel_backend.domain;
 
@@ -1084,7 +937,7 @@ public class Estadia {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Factura.java]
+// [domain/Factura.java]
 // [src/main/java/com/hotel/hotel_backend/domain/Factura.java]
 package com.hotel.hotel_backend.domain;
 
@@ -1238,7 +1091,7 @@ public class Factura {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Habitacion.java]
+// [domain/Habitacion.java]
 package com.hotel.hotel_backend.domain;
 
 import jakarta.persistence.*;
@@ -1288,7 +1141,7 @@ public class Habitacion {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Huesped.java]
+// [domain/Huesped.java]
 package com.hotel.hotel_backend.domain;
 
 import jakarta.persistence.*;
@@ -1427,7 +1280,7 @@ public class Huesped {
 }
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/MedioDePago/Cheque.java]
+// [domain/MedioDePago/Cheque.java]
 package com.hotel.hotel_backend.domain.MedioDePago;
 
 import jakarta.persistence.DiscriminatorValue;
@@ -1462,7 +1315,7 @@ public class Cheque extends MedioDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/MedioDePago/Efectivo.java]
+// [domain/MedioDePago/Efectivo.java]
 package com.hotel.hotel_backend.domain.MedioDePago;
 
 import jakarta.persistence.DiscriminatorValue;
@@ -1486,7 +1339,7 @@ public class Efectivo extends MedioDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/MedioDePago/MedioDePago.java]
+// [domain/MedioDePago/MedioDePago.java]
 // [src/main/java/com/hotel/hotel_backend/domain/MedioDePago/MedioDePago.java]
 package com.hotel.hotel_backend.domain.MedioDePago;
 
@@ -1521,7 +1374,7 @@ public abstract class MedioDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/MedioDePago/MonedaExtranjera.java]
+// [domain/MedioDePago/MonedaExtranjera.java]
 package com.hotel.hotel_backend.domain.MedioDePago;
 
 import jakarta.persistence.DiscriminatorValue;
@@ -1562,7 +1415,7 @@ public class MonedaExtranjera extends MedioDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/MedioDePago/Tarjeta.java]
+// [domain/MedioDePago/Tarjeta.java]
 package com.hotel.hotel_backend.domain.MedioDePago;
 
 import jakarta.persistence.DiscriminatorValue;
@@ -1597,7 +1450,7 @@ public class Tarjeta extends MedioDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/NotaDeCredito.java]
+// [domain/NotaDeCredito.java]
 package com.hotel.hotel_backend.domain;
 
 import com.hotel.hotel_backend.domain.ResponsableDePago.ResponsableDePago;
@@ -1667,7 +1520,7 @@ public class NotaDeCredito {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Pago.java]
+// [domain/Pago.java]
 // [src/main/java/com/hotel/hotel_backend/domain/Pago.java]
 package com.hotel.hotel_backend.domain;
 
@@ -1745,7 +1598,7 @@ public class Pago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Persona.java]
+// [domain/Persona.java]
 package com.hotel.hotel_backend.domain;
 
 import jakarta.persistence.Embeddable;
@@ -1777,7 +1630,7 @@ public class Persona {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Reserva.java]
+// [domain/Reserva.java]
 package com.hotel.hotel_backend.domain;
 
 import jakarta.persistence.*;
@@ -1855,7 +1708,7 @@ public class Reserva {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/ResponsableDePago/ResponsableDePago.java]
+// [domain/ResponsableDePago/ResponsableDePago.java]
 package com.hotel.hotel_backend.domain.ResponsableDePago;
 
 import jakarta.persistence.*;
@@ -1883,7 +1736,7 @@ public abstract class ResponsableDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/ResponsableDePago/ResponsableHuesped.java]
+// [domain/ResponsableDePago/ResponsableHuesped.java]
 package com.hotel.hotel_backend.domain.ResponsableDePago;
 
 import jakarta.persistence.*;
@@ -1917,7 +1770,7 @@ public class ResponsableHuesped extends ResponsableDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/ResponsableDePago/ResponsableJuridico.java]
+// [domain/ResponsableDePago/ResponsableJuridico.java]
 package com.hotel.hotel_backend.domain.ResponsableDePago;
 
 import jakarta.persistence.*;
@@ -1945,7 +1798,7 @@ public class ResponsableJuridico extends ResponsableDePago {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/domain/Usuario.java]
+// [domain/Usuario.java]
 package com.hotel.hotel_backend.domain;
 
 import jakarta.persistence.*;
@@ -1992,7 +1845,7 @@ public class Usuario {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/ConsumoDTO.java]
+// [dto/ConsumoDTO.java]
 package com.hotel.hotel_backend.dto;
 
 public class ConsumoDTO {
@@ -2010,7 +1863,7 @@ public class ConsumoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/DireccionDTO.java]
+// [dto/DireccionDTO.java]
 package com.hotel.hotel_backend.dto;
 
 public class DireccionDTO {
@@ -2066,7 +1919,7 @@ public class DireccionDTO {
 }
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/EstadiaDTO.java]
+// [dto/EstadiaDTO.java]
 package com.hotel.hotel_backend.dto;
 
 import java.util.List;
@@ -2122,7 +1975,7 @@ public class EstadiaDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/FacturaDTO.java]
+// [dto/FacturaDTO.java]
 // [src/main/java/com/hotel/hotel_backend/dto/FacturaDTO.java]
 package com.hotel.hotel_backend.dto;
 
@@ -2218,7 +2071,7 @@ public class FacturaDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/HabitacionDTO.java]
+// [dto/HabitacionDTO.java]
 package com.hotel.hotel_backend.dto;
 
 public class HabitacionDTO {
@@ -2249,7 +2102,7 @@ public class HabitacionDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/HuespedDTO.java]
+// [dto/HuespedDTO.java]
 // [src/main/java/com/hotel/hotel_backend/dto/HuespedDTO.java]
 package com.hotel.hotel_backend.dto;
 
@@ -2311,7 +2164,7 @@ public class HuespedDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/MedioDePago/ChequeDTO.java]
+// [dto/MedioDePago/ChequeDTO.java]
 package com.hotel.hotel_backend.dto.MedioDePago;
 
 public class ChequeDTO extends MedioDePagoDTO {
@@ -2341,7 +2194,7 @@ public class ChequeDTO extends MedioDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/MedioDePago/EfectivoDTO.java]
+// [dto/MedioDePago/EfectivoDTO.java]
 package com.hotel.hotel_backend.dto.MedioDePago;
 
 public class EfectivoDTO extends MedioDePagoDTO {
@@ -2360,7 +2213,7 @@ public class EfectivoDTO extends MedioDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/MedioDePago/MedioDePagoDTO.java]
+// [dto/MedioDePago/MedioDePagoDTO.java]
 package com.hotel.hotel_backend.dto.MedioDePago;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -2396,7 +2249,7 @@ public abstract class MedioDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/MedioDePago/MonedaExtranjeraDTO.java]
+// [dto/MedioDePago/MonedaExtranjeraDTO.java]
 package com.hotel.hotel_backend.dto.MedioDePago;
 
 public class MonedaExtranjeraDTO extends MedioDePagoDTO {
@@ -2432,7 +2285,7 @@ public class MonedaExtranjeraDTO extends MedioDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/MedioDePago/TarjetaDTO.java]
+// [dto/MedioDePago/TarjetaDTO.java]
 package com.hotel.hotel_backend.dto.MedioDePago;
 
 public class TarjetaDTO extends MedioDePagoDTO {
@@ -2462,7 +2315,7 @@ public class TarjetaDTO extends MedioDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/NotaDeCreditoDTO.java]
+// [dto/NotaDeCreditoDTO.java]
 // src/main/java/com/hotel/hotel_backend/dto/NotaDeCreditoDTO.java
 package com.hotel.hotel_backend.dto;
 
@@ -2513,7 +2366,7 @@ public class NotaDeCreditoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/PagoDTO.java]
+// [dto/PagoDTO.java]
 // [src/main/java/com/hotel/hotel_backend/dto/PagoDTO.java]
 package com.hotel.hotel_backend.dto;
 
@@ -2558,7 +2411,7 @@ public class PagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/PersonaDTO.java]
+// [dto/PersonaDTO.java]
 // [src/main/java/com/hotel/hotel_backend/dto/PersonaDTO.java]
 package com.hotel.hotel_backend.dto;
 
@@ -2588,7 +2441,7 @@ public class PersonaDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/ReservaDTO.java]
+// [dto/ReservaDTO.java]
 // [src/main/java/com/hotel/hotel_backend/dto/ReservaDTO.java]
 package com.hotel.hotel_backend.dto;
 
@@ -2631,7 +2484,7 @@ public class ReservaDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/ResponsableDePago/ResponsableDePagoDTO.java]
+// [dto/ResponsableDePago/ResponsableDePagoDTO.java]
 package com.hotel.hotel_backend.dto.ResponsableDePago;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -2655,7 +2508,7 @@ public abstract class ResponsableDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/ResponsableDePago/ResponsableHuespedDTO.java]
+// [dto/ResponsableDePago/ResponsableHuespedDTO.java]
 package com.hotel.hotel_backend.dto.ResponsableDePago;
 
 public class ResponsableHuespedDTO extends ResponsableDePagoDTO {
@@ -2681,7 +2534,7 @@ public class ResponsableHuespedDTO extends ResponsableDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/ResponsableDePago/ResponsableJuridicoDTO.java]
+// [dto/ResponsableDePago/ResponsableJuridicoDTO.java]
 package com.hotel.hotel_backend.dto.ResponsableDePago;
 
 public class ResponsableJuridicoDTO extends ResponsableDePagoDTO {
@@ -2702,7 +2555,7 @@ public class ResponsableJuridicoDTO extends ResponsableDePagoDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/dto/UsuarioDTO.java]
+// [dto/UsuarioDTO.java]
 package com.hotel.hotel_backend.dto;
 
 public class UsuarioDTO {
@@ -2729,7 +2582,7 @@ public class UsuarioDTO {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/HotelBackendApplication.java]
+// [HotelBackendApplication.java]
 package com.hotel.hotel_backend;
 
 import org.springframework.boot.SpringApplication;
@@ -2745,7 +2598,7 @@ public class HotelBackendApplication {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/EstadiaService.java]
+// [service/EstadiaService.java]
 // [src/main/java/com/hotel/hotel_backend/service/EstadiaService.java]
 package com.hotel.hotel_backend.service;
 
@@ -2906,7 +2759,7 @@ public class EstadiaService {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/FacturaService.java]
+// [service/FacturaService.java]
 // src/main/java/com/hotel/hotel_backend/service/FacturaService.java
 package com.hotel.hotel_backend.service;
 
@@ -3155,7 +3008,7 @@ public class FacturaService {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/HabitacionService.java]
+// [service/HabitacionService.java]
 // src/main/java/com/hotel/hotel_backend/service/HabitacionService.java
 package com.hotel.hotel_backend.service;
 
@@ -3248,7 +3101,7 @@ public class HabitacionService {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/HuespedService.java]
+// [service/HuespedService.java]
 // [src/main/java/com/hotel/hotel_backend/service/HuespedService.java]
 package com.hotel.hotel_backend.service;
 
@@ -3375,7 +3228,7 @@ public class HuespedService {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/Mapeo/MapearADominio.java]
+// [service/Mapeo/MapearADominio.java]
 package com.hotel.hotel_backend.service.Mapeo;
 
 import com.hotel.hotel_backend.domain.*;
@@ -3563,7 +3416,7 @@ public class MapearADominio {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/Mapeo/MapearADTO.java]
+// [service/Mapeo/MapearADTO.java]
 // [src/main/java/com/hotel/hotel_backend/service/Mapeo/MapearADTO.java]
 package com.hotel.hotel_backend.service.Mapeo;
 
@@ -3856,7 +3709,7 @@ public static EstadiaDTO mapearEstadia(Estadia e) {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/ReservaService.java]
+// [service/ReservaService.java]
 package com.hotel.hotel_backend.service;
 
 import com.hotel.hotel_backend.dao.HabitacionDAO;
@@ -3991,7 +3844,7 @@ public class ReservaService {
 
 
 
-// [src/main/java/com/hotel/hotel_backend/service/UsuarioService.java]
+// [service/UsuarioService.java]
 package com.hotel.hotel_backend.service;
 
 import com.hotel.hotel_backend.dao.UsuarioDAO;
@@ -4046,23 +3899,6 @@ public class UsuarioService {
 
         return dto;
     }
-}
-
-
-
-// [src/test/java/com/hotel/hotel_backend/HotelBackendApplicationTests.java]
-package com.hotel.hotel_backend;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class HotelBackendApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
 }
 
 

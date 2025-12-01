@@ -47,6 +47,9 @@ public class EstadiaService {
     // ==========================================================
     public String generarEstadia(EstadiaDTO dto) {
 
+        // ----------------------------
+        // Validar existencia de reserva
+        // ----------------------------
         if (dto == null || dto.getReserva() == null || dto.getReserva().getId() == null)
             throw new RuntimeException("Debe enviar una reserva válida para generar la estadía.");
 
@@ -55,16 +58,26 @@ public class EstadiaService {
                         "No existe la reserva con ID " + dto.getReserva().getId()
                 ));
 
-        // Validar habitaciones: deben estar Reservadas
-        for (Habitacion h : reserva.getHabitaciones()) {
-            if (!h.getEstado().equalsIgnoreCase("Reservada")) {
-                throw new RuntimeException(
-                        "La habitación " + h.getNumero() + " no está reservada para esta estadía."
-                );
-            }
+        // --------------------------------------------
+        // Validar fecha de check-in dentro del rango
+        // --------------------------------------------
+        LocalDate fechaCheckIn = dto.getFechaCheckIn() != null
+                ? LocalDate.parse(dto.getFechaCheckIn())
+                : LocalDate.now();
+
+        if (fechaCheckIn.isBefore(reserva.getFechaInicio()) ||
+                fechaCheckIn.isAfter(reserva.getFechaFin())) {
+
+            throw new RuntimeException(
+                    "La fecha de check-in (" + fechaCheckIn +
+                            ") no coincide con el rango de la reserva (" +
+                            reserva.getFechaInicio() + " a " + reserva.getFechaFin() + ")."
+            );
         }
 
-        // Validar titular
+        // ------------------------------------------------
+        // Validación del titular
+        // ------------------------------------------------
         if (dto.getTitular() == null || dto.getTitular().getNumeroDocumento() == null)
             throw new RuntimeException("Debe enviar el titular con número de documento.");
 
@@ -73,7 +86,9 @@ public class EstadiaService {
                         "No existe huésped con documento " + dto.getTitular().getNumeroDocumento()
                 ));
 
+        // ------------------------------------------------
         // Acompañantes
+        // ------------------------------------------------
         List<Huesped> acompaniantes = new ArrayList<>();
         if (dto.getAcompaniantes() != null) {
             for (HuespedDTO hDto : dto.getAcompaniantes()) {
@@ -85,20 +100,20 @@ public class EstadiaService {
             }
         }
 
-        // Cambiar estado reserva → Confirmada
+        // ------------------------------------------------
+        // Cambiar estado de la reserva a Confirmada
+        // ------------------------------------------------
         reserva.setEstado("Confirmada");
         reservaDAO.save(reserva);
 
-        // Cambiar estado habitaciones → Ocupada
-        for (Habitacion hab : reserva.getHabitaciones()) {
-            hab.setEstado("Ocupada");
-            habitacionDAO.save(hab);
-        }
+        
 
-        // Crear Estadía
+        // ------------------------------------------------
+        // Crear estadía
+        // ------------------------------------------------
         Estadia estadia = new Estadia();
         estadia.setId(dto.getId()); // puede venir null
-        estadia.setFechaCheckIn(LocalDate.now());
+        estadia.setFechaCheckIn(fechaCheckIn);
         estadia.setHoraCheckIn(LocalTime.now());
         estadia.setFechaCheckOut(null);
         estadia.setHoraCheckOut(null);
