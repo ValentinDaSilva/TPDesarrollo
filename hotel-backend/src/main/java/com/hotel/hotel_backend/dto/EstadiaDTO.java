@@ -19,6 +19,8 @@ public class EstadiaDTO {
     private HuespedDTO titular;
 
     private List<HuespedDTO> acompaniantes;
+    
+    private List<ConsumoDTO> consumos;
 
     public EstadiaDTO() {
     }
@@ -49,4 +51,7 @@ public class EstadiaDTO {
 
     public List<HuespedDTO> getAcompaniantes() { return acompaniantes; }
     public void setAcompaniantes(List<HuespedDTO> acompaniantes) { this.acompaniantes = acompaniantes; }
+
+    public List<ConsumoDTO> getConsumos() { return consumos; }
+    public void setConsumos(List<ConsumoDTO> consumos) { this.consumos = consumos; }
 }

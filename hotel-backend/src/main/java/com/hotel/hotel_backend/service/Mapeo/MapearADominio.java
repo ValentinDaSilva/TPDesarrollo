@@ -171,6 +171,21 @@ public class MapearADominio {
     // =====================================================
     //                 NOTA DE CRÉDITO
     // =====================================================
+    // =====================================================
+    //                 HABITACION
+    // =====================================================
+    public static Habitacion mapearHabitacion(HabitacionDTO dto) {
+        if (dto == null) return null;
+
+        Habitacion h = new Habitacion();
+        h.setNumero(dto.getNumero());
+        h.setCategoria(dto.getCategoria());
+        h.setCostoPorNoche(dto.getCostoPorNoche());
+        h.setEstado(dto.getEstado());
+
+        return h;
+    }
+
     public static NotaDeCredito mapearNotaDeCredito(NotaDeCreditoDTO dto) {
         if (dto == null) return null;
 

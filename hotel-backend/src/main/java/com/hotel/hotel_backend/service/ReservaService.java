@@ -53,9 +53,7 @@ public class ReservaService {
         List<Habitacion> habitacionesReales =
                 dto.getHabitaciones().stream()
                         .map(HabitacionDTO::getNumero)
-                        .map(n -> habitacionDAO.findByNumero(n)
-                                .orElseThrow(() ->
-                                        new RuntimeException("No existe la habitación Nº " + n)))
+                        .map(n -> habitacionDAO.findByNumero(n))
                         .toList();
 
         // validar solapamiento

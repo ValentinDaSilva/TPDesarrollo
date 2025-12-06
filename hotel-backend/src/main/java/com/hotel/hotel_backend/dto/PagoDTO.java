@@ -1,9 +1,9 @@
-// [src/main/java/com/hotel/hotel_backend/dto/PagoDTO.java]
 package com.hotel.hotel_backend.dto;
 
 import com.hotel.hotel_backend.dto.MedioDePago.MedioDePagoDTO;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class PagoDTO {
 
@@ -12,6 +12,8 @@ public class PagoDTO {
     private LocalTime hora;
     private double montoTotal;
     private MedioDePagoDTO medioDePago;
+    private FacturaDTO factura;
+    private List<PagoResponsableDTO> registroResponsables;
 
     public PagoDTO() {}
 
@@ -38,4 +40,12 @@ public class PagoDTO {
 
     public MedioDePagoDTO getMedioDePago() { return medioDePago; }
     public void setMedioDePago(MedioDePagoDTO medioDePago) { this.medioDePago = medioDePago; }
+
+    public FacturaDTO getFactura() { return factura; }
+    public void setFactura(FacturaDTO factura) { this.factura = factura; }
+
+    public List<PagoResponsableDTO> getRegistroResponsables() { return registroResponsables; }
+    public void setRegistroResponsables(List<PagoResponsableDTO> registroResponsables) {
+        this.registroResponsables = registroResponsables;
+    }
 }

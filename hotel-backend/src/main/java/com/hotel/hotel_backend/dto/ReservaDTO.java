@@ -14,6 +14,8 @@ public class ReservaDTO {
     private List<HabitacionDTO> habitaciones;
 
     private String estado;
+    
+    private EstadiaDTO estadia;
 
     public ReservaDTO() {}
 
@@ -36,4 +38,7 @@ public class ReservaDTO {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+
+    public EstadiaDTO getEstadia() { return estadia; }
+    public void setEstadia(EstadiaDTO estadia) { this.estadia = estadia; }
 }

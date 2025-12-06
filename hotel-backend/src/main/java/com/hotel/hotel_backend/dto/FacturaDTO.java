@@ -24,6 +24,7 @@ public class FacturaDTO {
     private double iva;
     private String detalle;
     private LocalTime horaSalida;
+    private NotaDeCreditoDTO notaDeCredito;
 
     public FacturaDTO() {}
 
@@ -84,4 +85,7 @@ public class FacturaDTO {
 
     public LocalTime getHoraSalida() { return horaSalida; }
     public void setHoraSalida(LocalTime horaSalida) { this.horaSalida = horaSalida; }
+
+    public NotaDeCreditoDTO getNotaDeCredito() { return notaDeCredito; }
+    public void setNotaDeCredito(NotaDeCreditoDTO notaDeCredito) { this.notaDeCredito = notaDeCredito; }
 }

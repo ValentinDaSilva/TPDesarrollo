@@ -3,6 +3,10 @@ package com.hotel.hotel_backend.service;
 
 import com.hotel.hotel_backend.dao.HabitacionDAO;
 import com.hotel.hotel_backend.domain.Habitacion;
+import com.hotel.hotel_backend.dto.HabitacionDTO;
+import com.hotel.hotel_backend.service.Mapeo.MapearADTO;
+import com.hotel.hotel_backend.service.Mapeo.MapearADominio;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,19 +20,20 @@ public class HabitacionService {
         this.habitacionDAO = habitacionDAO;
     }
 
-    public List<Habitacion> obtenerTodas() {
-        return habitacionDAO.findAll();
+    public List<HabitacionDTO> obtenerTodas() {
+        return habitacionDAO.findAll()
+            .stream()
+            .map(MapearADTO::mapearHabitacion)
+            .toList();
     }
 
-    public Habitacion obtenerPorNumero(int numero) {
-        return habitacionDAO.findByNumero(numero)
-                .orElseThrow(() ->
-                        new RuntimeException("No existe la habitación Nº " + numero));
+    public HabitacionDTO obtenerPorNumero(int numero) {
+        return MapearADTO.mapearHabitacion(habitacionDAO.findByNumero(numero));
     }
 
     public void cambiarEstado(int numero, String nuevoEstado) {
 
-        Habitacion h = obtenerPorNumero(numero);
+        Habitacion h = MapearADominio.mapearHabitacion( obtenerPorNumero(numero));
         String actual = normalizar(h.getEstado());
         nuevoEstado = normalizar(nuevoEstado);
 
