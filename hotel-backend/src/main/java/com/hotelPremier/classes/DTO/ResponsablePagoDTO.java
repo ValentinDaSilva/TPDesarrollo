@@ -12,6 +12,9 @@ public class ResponsablePagoDTO {
 
     // Persona jurídica
     private String cuit;
+    private String razonSocial;
+    private DireccionDTO direccion;
+    private String telefono;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -27,4 +30,13 @@ public class ResponsablePagoDTO {
 
     public String getCuit() { return cuit; }
     public void setCuit(String cuit) { this.cuit = cuit; }
+
+    public String getRazonSocial() { return razonSocial; }
+    public void setRazonSocial(String razonSocial) { this.razonSocial = razonSocial; }
+
+    public DireccionDTO getDireccion() { return direccion; }
+    public void setDireccion(DireccionDTO direccion) { this.direccion = direccion; }
+
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 }

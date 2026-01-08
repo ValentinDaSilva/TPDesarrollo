@@ -1,5 +1,6 @@
 package com.hotelPremier.controller;
 
+import com.hotelPremier.classes.DTO.ResponsablePagoDTO;
 import com.hotelPremier.service.ResponsablePagoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/responsablesPago")
-@Tag(name = "Responsables de Pago", description = "Búsqueda de responsables de pago")
+@Tag(name = "Responsables de Pago", description = "Gestión de responsables de pago")
 public class ResponsablePagoController {
 
     @Autowired
@@ -22,6 +23,26 @@ public class ResponsablePagoController {
         @RequestParam(required = false) String cuit
     ) {
         var result = responsablePagoService.buscarResponsablePago(dni, tipoDocumento, cuit);
+        return ResponseEntity.ok(
+            new ResponsablePagoIdResponse(result.id(), result.razonSocial())
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponsablePagoIdResponse> altaResponsablePago(
+        @RequestBody ResponsablePagoDTO dto
+    ) {
+        var result = responsablePagoService.altaResponsablePago(dto);
+        return ResponseEntity.ok(
+            new ResponsablePagoIdResponse(result.id(), result.razonSocial())
+        );
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponsablePagoIdResponse> modificarResponsablePago(
+        @RequestBody ResponsablePagoDTO dto
+    ) {
+        var result = responsablePagoService.modificarResponsablePago(dto);
         return ResponseEntity.ok(
             new ResponsablePagoIdResponse(result.id(), result.razonSocial())
         );

@@ -137,6 +137,13 @@ public interface ClassMapper {
     ServicioExtraID toEntityServicioExtraID(ServicioExtraIDDTO dto);
 
     // =====================================================
+    // DIRECCION
+    // =====================================================
+
+    DireccionDTO toDTO(Direccion d);
+    Direccion toEntity(DireccionDTO dto);
+
+    // =====================================================
     // RESPONSABLE DE PAGO (MANUAL)
     // =====================================================
 
@@ -156,6 +163,10 @@ public interface ClassMapper {
         if (r instanceof PersonaJuridica pj) {
             dto.setTipo("JURIDICA");
             dto.setCuit(pj.getCuit());
+            dto.setRazonSocial(pj.getRazonSocial());
+            if (pj.getDireccionEmpresa() != null) {
+                dto.setDireccion(toDTO(pj.getDireccionEmpresa()));
+            }
         }
 
         return dto;
