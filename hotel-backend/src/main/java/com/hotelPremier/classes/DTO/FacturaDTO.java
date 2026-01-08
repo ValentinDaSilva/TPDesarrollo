@@ -1,0 +1,152 @@
+package com.hotelPremier.classes.DTO;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.time.LocalDate;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class FacturaDTO {
+
+    private Integer id;
+    private LocalDate fecha;
+    private float total;
+    private String tipo;
+    private String estado;
+    private EstadiaDTO estadia;
+    private NotaDeCreditoDTO notacredito;
+    private PagoDTO pago;
+    private ResponsablePagoDTO responsablepago;   // 👈 AHORA ES DTO
+    
+    // Campos opcionales para cálculo automático con Strategy
+    private List<Integer> consumosIds = new java.util.ArrayList<>(); // IDs de los servicios extra seleccionados
+    private LocalDateTime fechaHoraCheckoutReal; // Fecha y hora real del checkout
+    private Float totalEstimado; // Total estimado enviado por el frontend (para validación)
+
+    public FacturaDTO() {
+        this.consumosIds = new java.util.ArrayList<>();
+    }
+
+    public FacturaDTO(Integer id,
+                      LocalDate fecha,
+                      float total,
+                      String tipo,
+                      String estado,
+                      EstadiaDTO estadia,
+                      NotaDeCreditoDTO notacredito,
+                      PagoDTO pago,
+                      ResponsablePagoDTO responsablepago) {
+        this.id = id;
+        this.fecha = fecha;
+        this.total = total;
+        this.tipo = tipo;
+        this.estado = estado;
+        this.estadia = estadia;
+        this.notacredito = notacredito;
+        this.pago = pago;
+        this.responsablepago = responsablepago;
+        this.consumosIds = new java.util.ArrayList<>();
+    }
+
+    public Integer getID() {
+        return id;
+    }
+
+    public void setID(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public EstadiaDTO getEstadia() {
+        return estadia;
+    }
+
+    public void setEstadia(EstadiaDTO estadia) {
+        this.estadia = estadia;
+    }
+
+    public NotaDeCreditoDTO getNotacredito() {
+        return notacredito;
+    }
+
+    public void setNotacredito(NotaDeCreditoDTO notacredito) {
+        this.notacredito = notacredito;
+    }
+
+    public PagoDTO getPago() {
+        return pago;
+    }
+
+    public void setPago(PagoDTO pago) {
+        this.pago = pago;
+    }
+
+    public ResponsablePagoDTO getResponsablepago() {
+        return responsablepago;
+    }
+
+    public void setResponsablepago(ResponsablePagoDTO responsablepago) {
+        this.responsablepago = responsablepago;
+    }
+
+    // Getters y setters para campos de cálculo
+    public List<Integer> getConsumosIds() {
+        // Asegurar que siempre retorne un array vacío en lugar de null
+        if (consumosIds == null) {
+            consumosIds = new java.util.ArrayList<>();
+        }
+        return consumosIds;
+    }
+
+    public void setConsumosIds(List<Integer> consumosIds) {
+        // Si se intenta setear null, usar array vacío
+        this.consumosIds = consumosIds != null ? consumosIds : new java.util.ArrayList<>();
+    }
+
+    public LocalDateTime getFechaHoraCheckoutReal() {
+        return fechaHoraCheckoutReal;
+    }
+
+    public void setFechaHoraCheckoutReal(LocalDateTime fechaHoraCheckoutReal) {
+        this.fechaHoraCheckoutReal = fechaHoraCheckoutReal;
+    }
+
+    public Float getTotalEstimado() {
+        return totalEstimado;
+    }
+
+    public void setTotalEstimado(Float totalEstimado) {
+        this.totalEstimado = totalEstimado;
+    }
+}
