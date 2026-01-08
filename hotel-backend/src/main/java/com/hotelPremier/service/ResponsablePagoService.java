@@ -5,11 +5,15 @@ import com.hotelPremier.classes.DTO.ResponsablePagoDTO;
 import com.hotelPremier.classes.exception.NegocioException;
 import com.hotelPremier.classes.exception.RecursoNoEncontradoException;
 import com.hotelPremier.repository.DireccionRepository;
+import com.hotelPremier.repository.FacturaRepository;
 import com.hotelPremier.repository.HuespedRepository;
 import com.hotelPremier.repository.ResponsablePagoRepository;
 import com.hotelPremier.classes.Dominio.Direccion;
+import com.hotelPremier.classes.Dominio.Factura;
 import com.hotelPremier.classes.Dominio.Huesped;
 import com.hotelPremier.classes.Dominio.HuespedID;
+
+import java.util.List;
 import com.hotelPremier.classes.Dominio.responsablePago.PersonaFisica;
 import com.hotelPremier.classes.Dominio.responsablePago.PersonaJuridica;
 import com.hotelPremier.classes.Dominio.responsablePago.ResponsablePago;
@@ -29,6 +33,9 @@ public class ResponsablePagoService {
 
     @Autowired
     private DireccionRepository direccionRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
     /**
      * Record para devolver el resultado de la búsqueda de responsable de pago.
@@ -323,5 +330,44 @@ public class ResponsablePagoService {
 
         PersonaJuridica personaJuridicaGuardada = responsablePagoRepository.save(personaJuridica);
         return new ResponsablePagoResult(personaJuridicaGuardada.getId(), personaJuridicaGuardada.getRazonSocial());
+    }
+
+    /**
+     * Elimina un responsable de pago existente.
+     * 
+     * @param dto DTO con el ID del responsable de pago a eliminar
+     * @throws NegocioException si el responsable de pago tiene facturas asociadas o si falta el ID
+     * @throws RecursoNoEncontradoException si no se encuentra el responsable de pago
+     */
+    @Transactional
+    public void eliminarResponsablePago(ResponsablePagoDTO dto) {
+        if (dto == null) {
+            throw new NegocioException("El DTO del responsable de pago no puede ser nulo");
+        }
+
+        if (dto.getId() == null) {
+            throw new NegocioException("Debe especificar el ID del responsable de pago a eliminar");
+        }
+
+        ResponsablePago responsablePago = responsablePagoRepository.findById(dto.getId())
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                    String.format("No se encontró responsable de pago con ID: %d", dto.getId())
+                ));
+
+        // Verificar si tiene facturas asociadas
+        List<Factura> facturasAsociadas = facturaRepository.findAll().stream()
+                .filter(f -> f.getResponsablePago() != null && 
+                            f.getResponsablePago().getId() != null && 
+                            f.getResponsablePago().getId().equals(dto.getId()))
+                .toList();
+
+        if (!facturasAsociadas.isEmpty()) {
+            throw new NegocioException(
+                String.format("No se puede eliminar el responsable de pago con ID: %d porque tiene facturas asociadas", dto.getId())
+            );
+        }
+
+        // Eliminar el responsable de pago
+        responsablePagoRepository.delete(responsablePago);
     }
 }

@@ -48,6 +48,14 @@ public class ResponsablePagoController {
         );
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> eliminarResponsablePago(
+        @RequestBody ResponsablePagoDTO dto
+    ) {
+        responsablePagoService.eliminarResponsablePago(dto);
+        return ResponseEntity.noContent().build();
+    }
+
     /**
      * DTO de respuesta simple para el frontend
      */
