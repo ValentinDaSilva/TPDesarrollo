@@ -93,6 +93,9 @@ public class ResponsablePagoService {
             // Crear PersonaFisica asociada al Huesped
             PersonaFisica nuevaPersonaFisica = new PersonaFisica();
             nuevaPersonaFisica.setHuesped(huesped);
+            // IMPORTANTE: PersonaFisica no debe tener direccion en la clase base ResponsablePago
+            // Solo PersonaJuridica tiene direccionEmpresa
+            nuevaPersonaFisica.setDireccion(null);
             
             PersonaFisica personaFisicaGuardada = responsablePagoRepository.save(nuevaPersonaFisica);
             return new ResponsablePagoResult(personaFisicaGuardada.getId(), null);
@@ -168,6 +171,9 @@ public class ResponsablePagoService {
         // Crear PersonaFisica
         PersonaFisica personaFisica = new PersonaFisica();
         personaFisica.setHuesped(huesped);
+        // IMPORTANTE: PersonaFisica no debe tener direccion en la clase base ResponsablePago
+        // Solo PersonaJuridica tiene direccionEmpresa
+        personaFisica.setDireccion(null);
 
         PersonaFisica personaFisicaGuardada = responsablePagoRepository.save(personaFisica);
         return new ResponsablePagoResult(personaFisicaGuardada.getId(), null);
