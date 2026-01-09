@@ -68,7 +68,7 @@ public class Factura {
     @JoinColumn(name = "pago")
     private Pago pago;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "responsablepago")
     private ResponsablePago responsablepago;
 

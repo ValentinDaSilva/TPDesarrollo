@@ -23,6 +23,7 @@ import com.hotelPremier.classes.mapper.ClassMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -102,6 +103,7 @@ public class FacturaService {
     /**
      * Crea una factura calculando el total con Strategy.
      */
+    @Transactional
     public FacturaDTO crearFacturaConCalculo(FacturaDTO dto, DatosFactura datosFactura) {
 
         if (dto.getEstadia() == null || dto.getEstadia().getID() == null) {
@@ -137,13 +139,18 @@ public class FacturaService {
             dto.getResponsablepago().getId() != null &&
             dto.getResponsablepago().getId() > 0) {
 
-            ResponsablePago rp = responsablePagoRepository.findById(
-                    dto.getResponsablepago().getId())
-                    .orElseThrow(() -> new RecursoNoEncontradoException(
-                            "Responsable de pago no encontrado con ID: " +
-                            dto.getResponsablepago().getId()));
-
-            factura.setResponsablePago(rp);
+            // Usar getReferenceById para obtener una referencia gestionada sin cargar la entidad completa
+            // Esto asegura que JPA use la entidad existente en lugar de intentar crear una nueva
+            // Si la entidad no existe, getReferenceById lanzará EntityNotFoundException
+            try {
+                ResponsablePago rp = responsablePagoRepository.getReferenceById(
+                        dto.getResponsablepago().getId());
+                factura.setResponsablePago(rp);
+            } catch (jakarta.persistence.EntityNotFoundException e) {
+                throw new RecursoNoEncontradoException(
+                        "Responsable de pago no encontrado con ID: " +
+                        dto.getResponsablepago().getId());
+            }
         }
 
         estadiaRepository.save(estadia);
@@ -163,6 +170,7 @@ public class FacturaService {
     /**
      * Crea una factura (si tiene estadía, siempre usa cálculo automático).
      */
+    @Transactional
     public FacturaDTO crearFactura(FacturaDTO dto) {
         if (dto.getEstadia() != null && dto.getEstadia().getID() != null) {
             return crearFacturaConCalculoAutomatico(dto);
@@ -175,13 +183,18 @@ public class FacturaService {
             dto.getResponsablepago().getId() != null &&
             dto.getResponsablepago().getId() > 0) {
 
-            ResponsablePago rp = responsablePagoRepository.findById(
-                    dto.getResponsablepago().getId())
-                    .orElseThrow(() -> new RecursoNoEncontradoException(
-                            "Responsable de pago no encontrado con ID: " +
-                            dto.getResponsablepago().getId()));
-
-            factura.setResponsablePago(rp);
+            // Usar getReferenceById para obtener una referencia gestionada sin cargar la entidad completa
+            // Esto asegura que JPA use la entidad existente en lugar de intentar crear una nueva
+            // Si la entidad no existe, getReferenceById lanzará EntityNotFoundException
+            try {
+                ResponsablePago rp = responsablePagoRepository.getReferenceById(
+                        dto.getResponsablepago().getId());
+                factura.setResponsablePago(rp);
+            } catch (jakarta.persistence.EntityNotFoundException e) {
+                throw new RecursoNoEncontradoException(
+                        "Responsable de pago no encontrado con ID: " +
+                        dto.getResponsablepago().getId());
+            }
         }
 
         facturaRepository.save(factura);
