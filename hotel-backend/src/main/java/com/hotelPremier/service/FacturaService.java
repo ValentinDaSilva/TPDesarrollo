@@ -25,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -50,6 +53,9 @@ public class FacturaService {
 
     @Autowired
     private ClassMapper mapper;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Obtiene las facturas de estadías finalizadas para una habitación.
@@ -139,18 +145,26 @@ public class FacturaService {
             dto.getResponsablepago().getId() != null &&
             dto.getResponsablepago().getId() > 0) {
 
-            // Usar getReferenceById para obtener una referencia gestionada sin cargar la entidad completa
-            // Esto asegura que JPA use la entidad existente en lugar de intentar crear una nueva
-            // Si la entidad no existe, getReferenceById lanzará EntityNotFoundException
-            try {
-                ResponsablePago rp = responsablePagoRepository.getReferenceById(
-                        dto.getResponsablepago().getId());
-                factura.setResponsablePago(rp);
-            } catch (jakarta.persistence.EntityNotFoundException e) {
-                throw new RecursoNoEncontradoException(
-                        "Responsable de pago no encontrado con ID: " +
-                        dto.getResponsablepago().getId());
+            // Usar findById para cargar la entidad completa y asegurar que esté en el contexto de persistencia
+            // Esto evita que JPA intente crear una nueva entidad cuando se guarda la factura
+            ResponsablePago rp = responsablePagoRepository.findById(
+                    dto.getResponsablepago().getId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Responsable de pago no encontrado con ID: " +
+                            dto.getResponsablepago().getId()));
+
+            // Asegurar que la entidad y sus relaciones estén completamente gestionadas
+            // Si la entidad está detached, hacer merge para que esté gestionada
+            if (!entityManager.contains(rp)) {
+                rp = entityManager.merge(rp);
             }
+            
+            // Asegurar que la Direccion asociada también esté en el contexto de persistencia
+            if (rp.getDireccion() != null && !entityManager.contains(rp.getDireccion())) {
+                entityManager.merge(rp.getDireccion());
+            }
+
+            factura.setResponsablePago(rp);
         }
 
         estadiaRepository.save(estadia);
@@ -183,18 +197,26 @@ public class FacturaService {
             dto.getResponsablepago().getId() != null &&
             dto.getResponsablepago().getId() > 0) {
 
-            // Usar getReferenceById para obtener una referencia gestionada sin cargar la entidad completa
-            // Esto asegura que JPA use la entidad existente en lugar de intentar crear una nueva
-            // Si la entidad no existe, getReferenceById lanzará EntityNotFoundException
-            try {
-                ResponsablePago rp = responsablePagoRepository.getReferenceById(
-                        dto.getResponsablepago().getId());
-                factura.setResponsablePago(rp);
-            } catch (jakarta.persistence.EntityNotFoundException e) {
-                throw new RecursoNoEncontradoException(
-                        "Responsable de pago no encontrado con ID: " +
-                        dto.getResponsablepago().getId());
+            // Usar findById para cargar la entidad completa y asegurar que esté en el contexto de persistencia
+            // Esto evita que JPA intente crear una nueva entidad cuando se guarda la factura
+            ResponsablePago rp = responsablePagoRepository.findById(
+                    dto.getResponsablepago().getId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Responsable de pago no encontrado con ID: " +
+                            dto.getResponsablepago().getId()));
+
+            // Asegurar que la entidad y sus relaciones estén completamente gestionadas
+            // Si la entidad está detached, hacer merge para que esté gestionada
+            if (!entityManager.contains(rp)) {
+                rp = entityManager.merge(rp);
             }
+            
+            // Asegurar que la Direccion asociada también esté en el contexto de persistencia
+            if (rp.getDireccion() != null && !entityManager.contains(rp.getDireccion())) {
+                entityManager.merge(rp.getDireccion());
+            }
+
+            factura.setResponsablePago(rp);
         }
 
         facturaRepository.save(factura);

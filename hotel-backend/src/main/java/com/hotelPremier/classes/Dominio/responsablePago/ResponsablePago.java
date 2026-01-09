@@ -17,7 +17,7 @@ public abstract class ResponsablePago {
     @Column(name = "id_responsablepago")
     private Integer id;
 
-    @OneToOne
+    @OneToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_direccion")
     private Direccion direccion;
 
