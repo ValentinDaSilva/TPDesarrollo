@@ -12,8 +12,6 @@ import com.hotelPremier.classes.Dominio.Direccion;
 import com.hotelPremier.classes.Dominio.Factura;
 import com.hotelPremier.classes.Dominio.Huesped;
 import com.hotelPremier.classes.Dominio.HuespedID;
-
-import java.util.List;
 import com.hotelPremier.classes.Dominio.responsablePago.PersonaFisica;
 import com.hotelPremier.classes.Dominio.responsablePago.PersonaJuridica;
 import com.hotelPremier.classes.Dominio.responsablePago.ResponsablePago;
@@ -21,6 +19,8 @@ import com.hotelPremier.classes.Dominio.responsablePago.ResponsablePago;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ResponsablePagoService {
@@ -38,357 +38,318 @@ public class ResponsablePagoService {
     private FacturaRepository facturaRepository;
 
     /**
-     * Record para devolver el resultado de la búsqueda de responsable de pago.
-     * Incluye el ID y la razón social (solo para PersonaJuridica).
+     * Resultado estándar para controller
      */
     public record ResponsablePagoResult(Integer id, String razonSocial) {}
 
-    /**
-     * Busca el ID de un ResponsablePago.
-     * Si viene CUIT, busca en PersonaJuridica.
-     * Si no viene CUIT pero viene DNI y tipoDocumento, busca en PersonaFisica.
-     * Si no encuentra un PersonaFisica, lo crea automáticamente asociado al Huesped.
-     * 
-     * @param dni DNI del huésped (opcional si viene CUIT)
-     * @param tipoDocumento Tipo de documento (opcional si viene CUIT)
-     * @param cuit CUIT de la persona jurídica (opcional)
-     * @return ResponsablePagoResult con el ID y razón social (si aplica)
-     * @throws IllegalArgumentException si no se proporcionan los datos necesarios
-     * @throws RecursoNoEncontradoException si no se encuentra el responsable de pago (para CUIT) o el huésped (para DNI)
-     */
+    // ==========================================================
+    // BUSCAR / CREAR RESPONSABLE DE PAGO
+    // ==========================================================
+
     @Transactional
-    public ResponsablePagoResult buscarResponsablePago(String dni, String tipoDocumento, String cuit) {
-        
-        // Si viene CUIT, buscar en PersonaJuridica
+    public ResponsablePagoResult buscarResponsablePago(
+            String dni,
+            String tipoDocumento,
+            String cuit
+    ) {
+
+        // ===============================
+        // PERSONA JURIDICA
+        // ===============================
         if (cuit != null && !cuit.trim().isEmpty()) {
-            PersonaJuridica pj = responsablePagoRepository.findPersonaJuridicaByCuit(cuit)
+
+            PersonaJuridica pj = responsablePagoRepository
+                    .findPersonaJuridicaByCuit(cuit)
                     .orElseThrow(() -> new RecursoNoEncontradoException(
-                        "No se encontró responsable de pago con CUIT: " + cuit
+                            "No se encontró responsable de pago con CUIT: " + cuit
                     ));
-            return new ResponsablePagoResult(pj.getId(), pj.getRazonSocial());
-        }
-        
-        // Si no viene CUIT, buscar en PersonaFisica por DNI y tipoDocumento
-        if (dni != null && !dni.trim().isEmpty() && 
-            tipoDocumento != null && !tipoDocumento.trim().isEmpty()) {
-            
-            // Buscar PersonaFisica existente
-            var personaFisicaOpt = responsablePagoRepository.findPersonaFisicaByDniAndTipoDocumento(dni, tipoDocumento);
-            
-            if (personaFisicaOpt.isPresent()) {
-                PersonaFisica pf = personaFisicaOpt.get();
-                return new ResponsablePagoResult(pf.getId(), null);
-            }
-            
-            // Si no existe, buscar el Huesped para crear el PersonaFisica
-            HuespedID huespedID = new HuespedID();
-            huespedID.setDni(dni);
-            huespedID.setTipoDocumento(tipoDocumento);
-            
-            Huesped huesped = huespedRepository.findById(huespedID)
-                    .orElseThrow(() -> new RecursoNoEncontradoException(
-                        String.format("No se encontró huésped con DNI: %s y tipo de documento: %s. Debe crear el huésped primero.", dni, tipoDocumento)
-                    ));
-            
-            // Verificar si el Huesped ya tiene un ResponsablePago asociado
-            // Si ya tiene uno, devolver ese en lugar de crear uno nuevo
-            if (huesped.getResponsablePago() != null && huesped.getResponsablePago().getId() != null) {
-                return new ResponsablePagoResult(huesped.getResponsablePago().getId(), null);
-            }
-            
-            // Crear PersonaFisica asociada al Huesped
-            PersonaFisica nuevaPersonaFisica = new PersonaFisica();
-            
-            // IMPORTANTE: Establecer la dirección como null ANTES de asignar el Huesped
-            // para evitar que JPA intente establecer la relación con Direccion desde el Huesped
-            nuevaPersonaFisica.setDireccion(null);
-            
-            // Asignar el Huesped después de establecer la dirección como null
-            nuevaPersonaFisica.setHuesped(huesped);
-            
-            // Guardar el PersonaFisica primero
-            PersonaFisica personaFisicaGuardada = responsablePagoRepository.save(nuevaPersonaFisica);
-            
-            // Actualizar la relación bidireccional en el Huesped
-            huesped.setResponsablePago(personaFisicaGuardada);
-            huespedRepository.save(huesped);
-            
-            return new ResponsablePagoResult(personaFisicaGuardada.getId(), null);
-        }
-        
-        // Si no se proporcionan los datos necesarios
-        throw new IllegalArgumentException(
-            "Debe proporcionar CUIT o bien DNI y tipoDocumento para buscar el responsable de pago"
-        );
-    }
 
-    /**
-     * Da de alta un nuevo responsable de pago (PersonaFisica o PersonaJuridica).
-     * 
-     * @param dto DTO con los datos del responsable de pago
-     * @return ResponsablePagoResult con el ID y razón social (si aplica)
-     * @throws NegocioException si faltan datos obligatorios o ya existe
-     */
-    @Transactional
-    public ResponsablePagoResult altaResponsablePago(ResponsablePagoDTO dto) {
-        if (dto == null) {
-            throw new NegocioException("El DTO del responsable de pago no puede ser nulo");
-        }
-
-        String tipo = dto.getTipo();
-        if (tipo == null || tipo.trim().isEmpty()) {
-            throw new NegocioException("Debe especificar el tipo de responsable de pago (FISICA o JURIDICA)");
-        }
-
-        tipo = tipo.toUpperCase().trim();
-
-        if ("FISICA".equals(tipo)) {
-            return altaPersonaFisica(dto);
-        } else if ("JURIDICA".equals(tipo)) {
-            return altaPersonaJuridica(dto);
-        } else {
-            throw new NegocioException("El tipo de responsable de pago debe ser FISICA o JURIDICA");
-        }
-    }
-
-    /**
-     * Da de alta una PersonaFisica.
-     */
-    private ResponsablePagoResult altaPersonaFisica(ResponsablePagoDTO dto) {
-        String dni = dto.getDni();
-        String tipoDocumento = dto.getTipoDocumento();
-
-        if (dni == null || dni.trim().isEmpty()) {
-            throw new NegocioException("Debe especificar el DNI para PersonaFisica");
-        }
-        if (tipoDocumento == null || tipoDocumento.trim().isEmpty()) {
-            throw new NegocioException("Debe especificar el tipo de documento para PersonaFisica");
-        }
-
-        // Verificar si ya existe
-        var personaFisicaOpt = responsablePagoRepository.findPersonaFisicaByDniAndTipoDocumento(dni, tipoDocumento);
-        if (personaFisicaOpt.isPresent()) {
-            throw new NegocioException(
-                String.format("Ya existe un responsable de pago PersonaFisica con DNI: %s y tipo de documento: %s", dni, tipoDocumento)
+            return new ResponsablePagoResult(
+                    pj.getId(),
+                    pj.getRazonSocial()
             );
         }
 
-        // Buscar el Huesped
+        // ===============================
+        // PERSONA FISICA
+        // ===============================
+        if (dni == null || dni.trim().isEmpty()
+                || tipoDocumento == null || tipoDocumento.trim().isEmpty()) {
+
+            throw new IllegalArgumentException(
+                    "Debe proporcionar CUIT o bien DNI y tipoDocumento"
+            );
+        }
+
+        // 1️⃣ Buscar PersonaFisica existente
+        var personaFisicaOpt =
+                responsablePagoRepository.findPersonaFisicaByDniAndTipoDocumento(dni, tipoDocumento);
+
+        if (personaFisicaOpt.isPresent()) {
+            return new ResponsablePagoResult(
+                    personaFisicaOpt.get().getId(),
+                    null
+            );
+        }
+
+        // 2️⃣ Buscar Huesped
         HuespedID huespedID = new HuespedID();
         huespedID.setDni(dni);
         huespedID.setTipoDocumento(tipoDocumento);
 
         Huesped huesped = huespedRepository.findById(huespedID)
                 .orElseThrow(() -> new RecursoNoEncontradoException(
-                    String.format("No se encontró huésped con DNI: %s y tipo de documento: %s. Debe crear el huésped primero.", dni, tipoDocumento)
+                        String.format(
+                                "No se encontró huésped con DNI: %s y tipoDocumento: %s",
+                                dni, tipoDocumento
+                        )
                 ));
 
-        // Crear PersonaFisica
-        PersonaFisica personaFisica = new PersonaFisica();
-        personaFisica.setHuesped(huesped);
-        // IMPORTANTE: PersonaFisica no debe tener direccion en la clase base ResponsablePago
-        // Solo PersonaJuridica tiene direccionEmpresa
-        personaFisica.setDireccion(null);
+        // 3️⃣ Si el huésped ya tiene responsablePago, devolverlo
+        if (huesped.getResponsablePago() != null
+                && huesped.getResponsablePago().getId() != null) {
 
-        PersonaFisica personaFisicaGuardada = responsablePagoRepository.save(personaFisica);
-        return new ResponsablePagoResult(personaFisicaGuardada.getId(), null);
+            return new ResponsablePagoResult(
+                    huesped.getResponsablePago().getId(),
+                    null
+            );
+        }
+
+        // 4️⃣ Crear PersonaFisica
+        PersonaFisica nuevaPersonaFisica = new PersonaFisica();
+        nuevaPersonaFisica.setHuesped(huesped);
+
+        PersonaFisica personaFisicaGuardada =
+                responsablePagoRepository.save(nuevaPersonaFisica);
+
+        // 5️⃣ Relación bidireccional
+        huesped.setResponsablePago(personaFisicaGuardada);
+        huespedRepository.save(huesped);
+
+        return new ResponsablePagoResult(
+                personaFisicaGuardada.getId(),
+                null
+        );
     }
 
-    /**
-     * Da de alta una PersonaJuridica.
-     * Valida todos los campos obligatorios según el caso de uso CU12.
-     * La validación de campos faltantes se realiza ANTES y en forma INDEPENDIENTE
-     * de la validación del CUIT duplicado.
-     */
+    // ==========================================================
+    // ALTA EXPLÍCITA
+    // ==========================================================
+
+    @Transactional
+    public ResponsablePagoResult altaResponsablePago(ResponsablePagoDTO dto) {
+
+        if (dto == null) {
+            throw new NegocioException("El DTO no puede ser nulo");
+        }
+
+        if (dto.getTipo() == null || dto.getTipo().trim().isEmpty()) {
+            throw new NegocioException("Debe indicar tipo FISICA o JURIDICA");
+        }
+
+        String tipo = dto.getTipo().toUpperCase().trim();
+
+        return switch (tipo) {
+            case "FISICA" -> altaPersonaFisica(dto);
+            case "JURIDICA" -> altaPersonaJuridica(dto);
+            default -> throw new NegocioException("Tipo de responsable de pago inválido");
+        };
+    }
+
+    // ==========================================================
+    // ALTA PERSONA FISICA
+    // ==========================================================
+
+    private ResponsablePagoResult altaPersonaFisica(ResponsablePagoDTO dto) {
+
+        String dni = dto.getDni();
+        String tipoDocumento = dto.getTipoDocumento();
+
+        if (dni == null || dni.trim().isEmpty()) {
+            throw new NegocioException("Debe especificar DNI");
+        }
+
+        if (tipoDocumento == null || tipoDocumento.trim().isEmpty()) {
+            throw new NegocioException("Debe especificar tipo de documento");
+        }
+
+        var existente =
+                responsablePagoRepository.findPersonaFisicaByDniAndTipoDocumento(dni, tipoDocumento);
+
+        if (existente.isPresent()) {
+            throw new NegocioException(
+                    "Ya existe un responsable de pago PersonaFisica con ese DNI"
+            );
+        }
+
+        HuespedID huespedID = new HuespedID();
+        huespedID.setDni(dni);
+        huespedID.setTipoDocumento(tipoDocumento);
+
+        Huesped huesped = huespedRepository.findById(huespedID)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Debe crear el huésped antes"
+                ));
+
+        PersonaFisica personaFisica = new PersonaFisica();
+        personaFisica.setHuesped(huesped);
+
+        PersonaFisica guardada =
+                responsablePagoRepository.save(personaFisica);
+
+        return new ResponsablePagoResult(
+                guardada.getId(),
+                null
+        );
+    }
+
+    // ==========================================================
+    // ALTA PERSONA JURIDICA
+    // ==========================================================
+
     private ResponsablePagoResult altaPersonaJuridica(ResponsablePagoDTO dto) {
-        // PASO 2.A: Validar campos obligatorios (ANTES y en forma INDEPENDIENTE de la validación del CUIT)
+
         StringBuilder errores = new StringBuilder();
-        
-        String razonSocial = dto.getRazonSocial();
-        if (razonSocial == null || razonSocial.trim().isEmpty()) {
-            errores.append("Razón social es obligatoria. ");
+
+        if (dto.getRazonSocial() == null || dto.getRazonSocial().trim().isEmpty()) {
+            errores.append("Razón social obligatoria. ");
         }
-        
-        String cuit = dto.getCuit();
-        if (cuit == null || cuit.trim().isEmpty()) {
-            errores.append("CUIT es obligatorio. ");
+
+        if (dto.getCuit() == null || dto.getCuit().trim().isEmpty()) {
+            errores.append("CUIT obligatorio. ");
         }
-        
-        String telefono = dto.getTelefono();
-        if (telefono == null || telefono.trim().isEmpty()) {
-            errores.append("Teléfono es obligatorio. ");
+
+        if (dto.getDireccion() == null) {
+            errores.append("Dirección obligatoria. ");
         }
-        
-        DireccionDTO direccionDTO = dto.getDireccion();
-        if (direccionDTO == null) {
-            errores.append("Dirección es obligatoria. ");
-        } else {
-            // Validar campos obligatorios de la dirección
-            if (direccionDTO.getCalle() == null || direccionDTO.getCalle().trim().isEmpty()) {
-                errores.append("Calle es obligatoria. ");
-            }
-            if (direccionDTO.getNumero() == null) {
-                errores.append("Número es obligatorio. ");
-            }
-            if (direccionDTO.getLocalidad() == null || direccionDTO.getLocalidad().trim().isEmpty()) {
-                errores.append("Localidad es obligatoria. ");
-            }
-            if (direccionDTO.getCodigoPostal() == null) {
-                errores.append("Código postal es obligatorio. ");
-            }
-            if (direccionDTO.getProvincia() == null || direccionDTO.getProvincia().trim().isEmpty()) {
-                errores.append("Provincia es obligatoria. ");
-            }
-            if (direccionDTO.getPais() == null || direccionDTO.getPais().trim().isEmpty()) {
-                errores.append("País es obligatorio. ");
-            }
-            // departamento y piso son opcionales según el caso de uso
-        }
-        
-        // Si hay errores de validación, lanzar excepción con todos los errores
+
         if (errores.length() > 0) {
             throw new NegocioException(errores.toString().trim());
         }
-        
-        // PASO 2.B: Validar que el CUIT no exista (validación independiente según el caso de uso)
-        var personaJuridicaOpt = responsablePagoRepository.findPersonaJuridicaByCuit(cuit);
-        if (personaJuridicaOpt.isPresent()) {
-            throw new NegocioException("¡CUIDADO! El CUIT ya existe en el sistema");
+
+        if (responsablePagoRepository.findPersonaJuridicaByCuit(dto.getCuit()).isPresent()) {
+            throw new NegocioException("El CUIT ya existe");
         }
 
-        // Convertir DireccionDTO a Direccion
-        Direccion direccion = convertirDireccionDTO(direccionDTO);
-        
-        // Guardar la dirección primero
+        Direccion direccion = convertirDireccionDTO(dto.getDireccion());
         Direccion direccionGuardada = direccionRepository.save(direccion);
 
-        // Crear PersonaJuridica
-        PersonaJuridica personaJuridica = new PersonaJuridica();
-        personaJuridica.setCuit(cuit);
-        personaJuridica.setRazonSocial(razonSocial);
-        personaJuridica.setDireccionEmpresa(direccionGuardada);
-        // Nota: El teléfono no está en la entidad PersonaJuridica según el modelo actual
-        // Si se necesita almacenar, habría que agregarlo a la entidad
+        PersonaJuridica pj = new PersonaJuridica();
+        pj.setCuit(dto.getCuit());
+        pj.setRazonSocial(dto.getRazonSocial());
+        pj.setDireccionEmpresa(direccionGuardada);
 
-        PersonaJuridica personaJuridicaGuardada = responsablePagoRepository.save(personaJuridica);
-        return new ResponsablePagoResult(personaJuridicaGuardada.getId(), personaJuridicaGuardada.getRazonSocial());
+        PersonaJuridica guardada =
+                responsablePagoRepository.save(pj);
+
+        return new ResponsablePagoResult(
+                guardada.getId(),
+                guardada.getRazonSocial()
+        );
     }
 
-    /**
-     * Convierte un DireccionDTO a Direccion.
-     */
-    private Direccion convertirDireccionDTO(DireccionDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-        
-        Direccion direccion = new Direccion();
-        direccion.setCalle(dto.getCalle());
-        direccion.setNumero(dto.getNumero());
-        direccion.setLocalidad(dto.getLocalidad());
-        direccion.setDepartamento(dto.getDepartamento());
-        direccion.setPiso(dto.getPiso());
-        direccion.setCodigoPostal(dto.getCodigoPostal());
-        direccion.setProvincia(dto.getProvincia());
-        direccion.setPais(dto.getPais());
-        
-        return direccion;
-    }
+    // ==========================================================
+    // MODIFICAR RESPONSABLE DE PAGO (SOLO JURIDICA)
+    // ==========================================================
 
-    /**
-     * Modifica un responsable de pago existente.
-     * 
-     * @param dto DTO con los datos del responsable de pago a modificar (debe incluir el ID)
-     * @return ResponsablePagoResult con el ID y razón social (si aplica)
-     * @throws NegocioException si faltan datos obligatorios
-     * @throws RecursoNoEncontradoException si no se encuentra el responsable de pago
-     */
     @Transactional
     public ResponsablePagoResult modificarResponsablePago(ResponsablePagoDTO dto) {
+
         if (dto == null) {
-            throw new NegocioException("El DTO del responsable de pago no puede ser nulo");
+            throw new NegocioException("El DTO no puede ser nulo");
         }
 
         if (dto.getId() == null) {
-            throw new NegocioException("Debe especificar el ID del responsable de pago a modificar");
+            throw new NegocioException("Debe indicar el ID del responsable de pago");
         }
 
-        ResponsablePago responsablePago = responsablePagoRepository.findById(dto.getId())
-                .orElseThrow(() -> new RecursoNoEncontradoException(
-                    String.format("No se encontró responsable de pago con ID: %d", dto.getId())
-                ));
+        ResponsablePago responsablePago =
+                responsablePagoRepository.findById(dto.getId())
+                        .orElseThrow(() -> new RecursoNoEncontradoException(
+                                "No se encontró responsable de pago con ID: " + dto.getId()
+                        ));
 
         if (responsablePago instanceof PersonaFisica) {
-            throw new NegocioException("No se puede modificar una PersonaFisica. La relación se mantiene con el huésped.");
-        } else if (responsablePago instanceof PersonaJuridica) {
-            return modificarPersonaJuridica((PersonaJuridica) responsablePago, dto);
-        } else {
-            throw new NegocioException("Tipo de responsable de pago no reconocido");
+            throw new NegocioException(
+                    "No se puede modificar una Persona Física"
+            );
         }
-    }
 
-    /**
-     * Modifica una PersonaJuridica.
-     */
-    private ResponsablePagoResult modificarPersonaJuridica(PersonaJuridica personaJuridica, ResponsablePagoDTO dto) {
-        String cuit = dto.getCuit();
-        String razonSocial = dto.getRazonSocial();
+        PersonaJuridica pj = (PersonaJuridica) responsablePago;
 
-        if (cuit != null && !cuit.trim().isEmpty()) {
-            // Verificar que el CUIT no esté en uso por otro responsable de pago
-            var personaJuridicaOpt = responsablePagoRepository.findPersonaJuridicaByCuit(cuit);
-            if (personaJuridicaOpt.isPresent() && !personaJuridicaOpt.get().getId().equals(personaJuridica.getId())) {
-                throw new NegocioException(
-                    String.format("Ya existe otro responsable de pago PersonaJuridica con CUIT: %s", cuit)
-                );
+        if (dto.getCuit() != null && !dto.getCuit().trim().isEmpty()) {
+
+            var existente =
+                    responsablePagoRepository.findPersonaJuridicaByCuit(dto.getCuit());
+
+            if (existente.isPresent()
+                    && !existente.get().getId().equals(pj.getId())) {
+                throw new NegocioException("El CUIT ya está en uso");
             }
-            personaJuridica.setCuit(cuit);
+
+            pj.setCuit(dto.getCuit());
         }
 
-        if (razonSocial != null) {
-            personaJuridica.setRazonSocial(razonSocial);
+        if (dto.getRazonSocial() != null) {
+            pj.setRazonSocial(dto.getRazonSocial());
         }
 
-        PersonaJuridica personaJuridicaGuardada = responsablePagoRepository.save(personaJuridica);
-        return new ResponsablePagoResult(personaJuridicaGuardada.getId(), personaJuridicaGuardada.getRazonSocial());
+        PersonaJuridica guardada =
+                responsablePagoRepository.save(pj);
+
+        return new ResponsablePagoResult(
+                guardada.getId(),
+                guardada.getRazonSocial()
+        );
     }
 
-    /**
-     * Elimina un responsable de pago existente.
-     * 
-     * @param dto DTO con el ID del responsable de pago a eliminar
-     * @throws NegocioException si el responsable de pago tiene facturas asociadas o si falta el ID
-     * @throws RecursoNoEncontradoException si no se encuentra el responsable de pago
-     */
+    // ==========================================================
+    // ELIMINAR
+    // ==========================================================
+
     @Transactional
     public void eliminarResponsablePago(ResponsablePagoDTO dto) {
-        if (dto == null) {
-            throw new NegocioException("El DTO del responsable de pago no puede ser nulo");
+
+        if (dto == null || dto.getId() == null) {
+            throw new NegocioException("Debe indicar el ID");
         }
 
-        if (dto.getId() == null) {
-            throw new NegocioException("Debe especificar el ID del responsable de pago a eliminar");
-        }
+        ResponsablePago responsablePago =
+                responsablePagoRepository.findById(dto.getId())
+                        .orElseThrow(() -> new RecursoNoEncontradoException(
+                                "No se encontró responsable de pago"
+                        ));
 
-        ResponsablePago responsablePago = responsablePagoRepository.findById(dto.getId())
-                .orElseThrow(() -> new RecursoNoEncontradoException(
-                    String.format("No se encontró responsable de pago con ID: %d", dto.getId())
-                ));
-
-        // Verificar si tiene facturas asociadas
         List<Factura> facturasAsociadas = facturaRepository.findAll().stream()
-                .filter(f -> f.getResponsablePago() != null && 
-                            f.getResponsablePago().getId() != null && 
-                            f.getResponsablePago().getId().equals(dto.getId()))
+                .filter(f -> f.getResponsablePago() != null
+                        && f.getResponsablePago().getId().equals(dto.getId()))
                 .toList();
 
         if (!facturasAsociadas.isEmpty()) {
             throw new NegocioException(
-                String.format("No se puede eliminar el responsable de pago con ID: %d porque tiene facturas asociadas", dto.getId())
+                    "No se puede eliminar: tiene facturas asociadas"
             );
         }
 
-        // Eliminar el responsable de pago
         responsablePagoRepository.delete(responsablePago);
+    }
+
+    // ==========================================================
+    // UTIL
+    // ==========================================================
+
+    private Direccion convertirDireccionDTO(DireccionDTO dto) {
+
+        Direccion d = new Direccion();
+        d.setCalle(dto.getCalle());
+        d.setNumero(dto.getNumero());
+        d.setLocalidad(dto.getLocalidad());
+        d.setDepartamento(dto.getDepartamento());
+        d.setPiso(dto.getPiso());
+        d.setCodigoPostal(dto.getCodigoPostal());
+        d.setProvincia(dto.getProvincia());
+        d.setPais(dto.getPais());
+
+        return d;
     }
 }
