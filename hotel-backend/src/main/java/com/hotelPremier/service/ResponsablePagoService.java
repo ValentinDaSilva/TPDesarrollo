@@ -90,14 +90,29 @@ public class ResponsablePagoService {
                         String.format("No se encontró huésped con DNI: %s y tipo de documento: %s. Debe crear el huésped primero.", dni, tipoDocumento)
                     ));
             
+            // Verificar si el Huesped ya tiene un ResponsablePago asociado
+            // Si ya tiene uno, devolver ese en lugar de crear uno nuevo
+            if (huesped.getResponsablePago() != null && huesped.getResponsablePago().getId() != null) {
+                return new ResponsablePagoResult(huesped.getResponsablePago().getId(), null);
+            }
+            
             // Crear PersonaFisica asociada al Huesped
             PersonaFisica nuevaPersonaFisica = new PersonaFisica();
-            nuevaPersonaFisica.setHuesped(huesped);
-            // IMPORTANTE: PersonaFisica no debe tener direccion en la clase base ResponsablePago
-            // Solo PersonaJuridica tiene direccionEmpresa
+            
+            // IMPORTANTE: Establecer la dirección como null ANTES de asignar el Huesped
+            // para evitar que JPA intente establecer la relación con Direccion desde el Huesped
             nuevaPersonaFisica.setDireccion(null);
             
+            // Asignar el Huesped después de establecer la dirección como null
+            nuevaPersonaFisica.setHuesped(huesped);
+            
+            // Guardar el PersonaFisica primero
             PersonaFisica personaFisicaGuardada = responsablePagoRepository.save(nuevaPersonaFisica);
+            
+            // Actualizar la relación bidireccional en el Huesped
+            huesped.setResponsablePago(personaFisicaGuardada);
+            huespedRepository.save(huesped);
+            
             return new ResponsablePagoResult(personaFisicaGuardada.getId(), null);
         }
         
