@@ -15,7 +15,7 @@ public class ResponsablePagoDTO {
     private String razonSocial;
     private DireccionDTO direccion;
     private String telefono;
-
+    
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
