@@ -158,6 +158,10 @@ public interface ClassMapper {
             dto.setTipo("FISICA");
             dto.setDni(pf.getHuesped().getHuespedID().getDni());
             dto.setTipoDocumento(pf.getHuesped().getHuespedID().getTipoDocumento());
+            // Incluir los datos completos del huésped
+            if (pf.getHuesped() != null) {
+                dto.setHuesped(toDTO(pf.getHuesped()));
+            }
         }
 
         if (r instanceof PersonaJuridica pj) {

@@ -16,6 +16,9 @@ public class ResponsablePagoDTO {
     private DireccionDTO direccion;
     private String telefono;
     
+    // Datos del huésped (solo para Persona Física)
+    private HuespedDTO huesped;
+    
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -39,4 +42,7 @@ public class ResponsablePagoDTO {
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public HuespedDTO getHuesped() { return huesped; }
+    public void setHuesped(HuespedDTO huesped) { this.huesped = huesped; }
 }

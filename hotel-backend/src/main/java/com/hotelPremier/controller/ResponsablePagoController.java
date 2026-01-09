@@ -17,35 +17,29 @@ public class ResponsablePagoController {
     private ResponsablePagoService responsablePagoService;
 
     @GetMapping
-    public ResponseEntity<ResponsablePagoIdResponse> buscarResponsablePago(
+    public ResponseEntity<ResponsablePagoDTO> buscarResponsablePago(
         @RequestParam(required = false) String dni,
         @RequestParam(required = false) String tipoDocumento,
         @RequestParam(required = false) String cuit
     ) {
-        var result = responsablePagoService.buscarResponsablePago(dni, tipoDocumento, cuit);
-        return ResponseEntity.ok(
-            new ResponsablePagoIdResponse(result.id(), result.razonSocial())
-        );
+        ResponsablePagoDTO result = responsablePagoService.buscarResponsablePago(dni, tipoDocumento, cuit);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping
-    public ResponseEntity<ResponsablePagoIdResponse> altaResponsablePago(
+    public ResponseEntity<ResponsablePagoDTO> altaResponsablePago(
         @RequestBody ResponsablePagoDTO dto
     ) {
-        var result = responsablePagoService.altaResponsablePago(dto);
-        return ResponseEntity.ok(
-            new ResponsablePagoIdResponse(result.id(), result.razonSocial())
-        );
+        ResponsablePagoDTO result = responsablePagoService.altaResponsablePago(dto);
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping
-    public ResponseEntity<ResponsablePagoIdResponse> modificarResponsablePago(
+    public ResponseEntity<ResponsablePagoDTO> modificarResponsablePago(
         @RequestBody ResponsablePagoDTO dto
     ) {
-        var result = responsablePagoService.modificarResponsablePago(dto);
-        return ResponseEntity.ok(
-            new ResponsablePagoIdResponse(result.id(), result.razonSocial())
-        );
+        ResponsablePagoDTO result = responsablePagoService.modificarResponsablePago(dto);
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping
@@ -55,12 +49,4 @@ public class ResponsablePagoController {
         responsablePagoService.eliminarResponsablePago(dto);
         return ResponseEntity.noContent().build();
     }
-
-    /**
-     * DTO de respuesta simple para el frontend
-     */
-    private record ResponsablePagoIdResponse(
-        Integer id,
-        String razonSocial
-    ) {}
 }

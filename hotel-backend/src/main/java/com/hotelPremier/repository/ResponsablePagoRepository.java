@@ -14,12 +14,15 @@ public interface ResponsablePagoRepository extends JpaRepository<ResponsablePago
     
     /**
      * Busca un ResponsablePago de tipo PersonaFisica por DNI y tipo de documento.
+     * Incluye fetch join del huésped y su dirección para evitar lazy loading.
      */
     @Query("""
         SELECT pf 
         FROM PersonaFisica pf 
-        WHERE pf.huesped.huespedID.dni = :dni 
-        AND pf.huesped.huespedID.tipoDocumento = :tipoDocumento
+        LEFT JOIN FETCH pf.huesped h
+        LEFT JOIN FETCH h.direccion
+        WHERE h.huespedID.dni = :dni 
+        AND h.huespedID.tipoDocumento = :tipoDocumento
     """)
     Optional<PersonaFisica> findPersonaFisicaByDniAndTipoDocumento(
         @Param("dni") String dni, 
@@ -31,4 +34,17 @@ public interface ResponsablePagoRepository extends JpaRepository<ResponsablePago
      */
     @Query("SELECT pj FROM PersonaJuridica pj WHERE pj.cuit = :cuit")
     Optional<PersonaJuridica> findPersonaJuridicaByCuit(@Param("cuit") String cuit);
+    
+    /**
+     * Busca un ResponsablePago de tipo PersonaFisica por ID.
+     * Incluye fetch join del huésped y su dirección para evitar lazy loading.
+     */
+    @Query("""
+        SELECT pf 
+        FROM PersonaFisica pf 
+        LEFT JOIN FETCH pf.huesped h
+        LEFT JOIN FETCH h.direccion
+        WHERE pf.id = :id
+    """)
+    Optional<PersonaFisica> findPersonaFisicaByIdWithHuesped(@Param("id") Integer id);
 }

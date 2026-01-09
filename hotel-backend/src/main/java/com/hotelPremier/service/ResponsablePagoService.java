@@ -4,6 +4,7 @@ import com.hotelPremier.classes.DTO.DireccionDTO;
 import com.hotelPremier.classes.DTO.ResponsablePagoDTO;
 import com.hotelPremier.classes.exception.NegocioException;
 import com.hotelPremier.classes.exception.RecursoNoEncontradoException;
+import com.hotelPremier.classes.mapper.ClassMapper;
 import com.hotelPremier.repository.DireccionRepository;
 import com.hotelPremier.repository.FacturaRepository;
 import com.hotelPremier.repository.HuespedRepository;
@@ -37,6 +38,9 @@ public class ResponsablePagoService {
     @Autowired
     private FacturaRepository facturaRepository;
 
+    @Autowired
+    private ClassMapper classMapper;
+
     /**
      * Resultado estándar para controller
      */
@@ -47,7 +51,7 @@ public class ResponsablePagoService {
     // ==========================================================
 
     @Transactional
-    public ResponsablePagoResult buscarResponsablePago(
+    public ResponsablePagoDTO buscarResponsablePago(
             String dni,
             String tipoDocumento,
             String cuit
@@ -64,10 +68,7 @@ public class ResponsablePagoService {
                             "No se encontró responsable de pago con CUIT: " + cuit
                     ));
 
-            return new ResponsablePagoResult(
-                    pj.getId(),
-                    pj.getRazonSocial()
-            );
+            return classMapper.toDTO(pj);
         }
 
         // ===============================
@@ -86,10 +87,7 @@ public class ResponsablePagoService {
                 responsablePagoRepository.findPersonaFisicaByDniAndTipoDocumento(dni, tipoDocumento);
 
         if (personaFisicaOpt.isPresent()) {
-            return new ResponsablePagoResult(
-                    personaFisicaOpt.get().getId(),
-                    null
-            );
+            return classMapper.toDTO(personaFisicaOpt.get());
         }
 
         // 2️⃣ Buscar Huesped
@@ -109,10 +107,7 @@ public class ResponsablePagoService {
         if (huesped.getResponsablePago() != null
                 && huesped.getResponsablePago().getId() != null) {
 
-            return new ResponsablePagoResult(
-                    huesped.getResponsablePago().getId(),
-                    null
-            );
+            return classMapper.toDTO(huesped.getResponsablePago());
         }
 
         // 4️⃣ Crear PersonaFisica
@@ -126,10 +121,7 @@ public class ResponsablePagoService {
         huesped.setResponsablePago(personaFisicaGuardada);
         huespedRepository.save(huesped);
 
-        return new ResponsablePagoResult(
-                personaFisicaGuardada.getId(),
-                null
-        );
+        return classMapper.toDTO(personaFisicaGuardada);
     }
 
     // ==========================================================
@@ -137,7 +129,7 @@ public class ResponsablePagoService {
     // ==========================================================
 
     @Transactional
-    public ResponsablePagoResult altaResponsablePago(ResponsablePagoDTO dto) {
+    public ResponsablePagoDTO altaResponsablePago(ResponsablePagoDTO dto) {
 
         if (dto == null) {
             throw new NegocioException("El DTO no puede ser nulo");
@@ -160,7 +152,7 @@ public class ResponsablePagoService {
     // ALTA PERSONA FISICA
     // ==========================================================
 
-    private ResponsablePagoResult altaPersonaFisica(ResponsablePagoDTO dto) {
+    private ResponsablePagoDTO altaPersonaFisica(ResponsablePagoDTO dto) {
 
         String dni = dto.getDni();
         String tipoDocumento = dto.getTipoDocumento();
@@ -197,17 +189,14 @@ public class ResponsablePagoService {
         PersonaFisica guardada =
                 responsablePagoRepository.save(personaFisica);
 
-        return new ResponsablePagoResult(
-                guardada.getId(),
-                null
-        );
+        return classMapper.toDTO(guardada);
     }
 
     // ==========================================================
     // ALTA PERSONA JURIDICA
     // ==========================================================
 
-    private ResponsablePagoResult altaPersonaJuridica(ResponsablePagoDTO dto) {
+    private ResponsablePagoDTO altaPersonaJuridica(ResponsablePagoDTO dto) {
 
         StringBuilder errores = new StringBuilder();
 
@@ -242,10 +231,7 @@ public class ResponsablePagoService {
         PersonaJuridica guardada =
                 responsablePagoRepository.save(pj);
 
-        return new ResponsablePagoResult(
-                guardada.getId(),
-                guardada.getRazonSocial()
-        );
+        return classMapper.toDTO(guardada);
     }
 
     // ==========================================================
@@ -253,7 +239,7 @@ public class ResponsablePagoService {
     // ==========================================================
 
     @Transactional
-    public ResponsablePagoResult modificarResponsablePago(ResponsablePagoDTO dto) {
+    public ResponsablePagoDTO modificarResponsablePago(ResponsablePagoDTO dto) {
 
         if (dto == null) {
             throw new NegocioException("El DTO no puede ser nulo");
@@ -297,10 +283,7 @@ public class ResponsablePagoService {
         PersonaJuridica guardada =
                 responsablePagoRepository.save(pj);
 
-        return new ResponsablePagoResult(
-                guardada.getId(),
-                guardada.getRazonSocial()
-        );
+        return classMapper.toDTO(guardada);
     }
 
     // ==========================================================
