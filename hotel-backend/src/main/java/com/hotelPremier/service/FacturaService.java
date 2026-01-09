@@ -145,24 +145,22 @@ public class FacturaService {
             dto.getResponsablepago().getId() != null &&
             dto.getResponsablepago().getId() > 0) {
 
-            // Usar findById para cargar la entidad completa y asegurar que esté en el contexto de persistencia
-            // Esto evita que JPA intente crear una nueva entidad cuando se guarda la factura
+            // Cargar el ResponsablePago y asegurar que esté completamente gestionado
+            // Usar findById para cargar la entidad completa y asegurar que esté en el contexto
             ResponsablePago rp = responsablePagoRepository.findById(
                     dto.getResponsablepago().getId())
                     .orElseThrow(() -> new RecursoNoEncontradoException(
                             "Responsable de pago no encontrado con ID: " +
                             dto.getResponsablepago().getId()));
 
-            // Asegurar que la entidad y sus relaciones estén completamente gestionadas
-            // Si la entidad está detached, hacer merge para que esté gestionada
+            // Asegurar que la entidad esté gestionada en el contexto de persistencia
+            // Si no está gestionada, hacer merge para que esté gestionada
             if (!entityManager.contains(rp)) {
                 rp = entityManager.merge(rp);
             }
             
-            // Asegurar que la Direccion asociada también esté en el contexto de persistencia
-            if (rp.getDireccion() != null && !entityManager.contains(rp.getDireccion())) {
-                entityManager.merge(rp.getDireccion());
-            }
+            // IMPORTANTE: No tocar la Direccion asociada para evitar que JPA intente persistirla
+            // y cause que se cree un nuevo ResponsablePago. Solo asignar la referencia.
 
             factura.setResponsablePago(rp);
         }
@@ -197,24 +195,22 @@ public class FacturaService {
             dto.getResponsablepago().getId() != null &&
             dto.getResponsablepago().getId() > 0) {
 
-            // Usar findById para cargar la entidad completa y asegurar que esté en el contexto de persistencia
-            // Esto evita que JPA intente crear una nueva entidad cuando se guarda la factura
+            // Cargar el ResponsablePago y asegurar que esté completamente gestionado
+            // Usar findById para cargar la entidad completa y asegurar que esté en el contexto
             ResponsablePago rp = responsablePagoRepository.findById(
                     dto.getResponsablepago().getId())
                     .orElseThrow(() -> new RecursoNoEncontradoException(
                             "Responsable de pago no encontrado con ID: " +
                             dto.getResponsablepago().getId()));
 
-            // Asegurar que la entidad y sus relaciones estén completamente gestionadas
-            // Si la entidad está detached, hacer merge para que esté gestionada
+            // Asegurar que la entidad esté gestionada en el contexto de persistencia
+            // Si no está gestionada, hacer merge para que esté gestionada
             if (!entityManager.contains(rp)) {
                 rp = entityManager.merge(rp);
             }
             
-            // Asegurar que la Direccion asociada también esté en el contexto de persistencia
-            if (rp.getDireccion() != null && !entityManager.contains(rp.getDireccion())) {
-                entityManager.merge(rp.getDireccion());
-            }
+            // IMPORTANTE: No tocar la Direccion asociada para evitar que JPA intente persistirla
+            // y cause que se cree un nuevo ResponsablePago. Solo asignar la referencia.
 
             factura.setResponsablePago(rp);
         }
